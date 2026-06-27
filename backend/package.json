@@ -1,0 +1,65 @@
+{
+  "name": "expressdeliv-backend",
+  "version": "1.0.0",
+  "description": "Backend EXPRESSDELIV — Node.js ES Modules",
+  "main": "src/server.js",
+  "type": "module",   
+
+
+  "scripts": {
+    "dev":        "cross-env NODE_ENV=development nodemon src/server.js",
+
+    "start":      "cross-env NODE_ENV=production node src/server.js",
+
+    "test":       "cross-env NODE_ENV=test node --experimental-vm-modules node_modules/jest/bin/jest.js --runInBand",
+
+    "test:watch": "cross-env NODE_ENV=test node --experimental-vm-modules node_modules/jest/bin/jest.js --watch"
+
+  },
+
+  "dependencies": {
+    "express":              "^4.19.2",
+
+    "cors":                 "^2.8.5",
+    "dotenv":               "^16.4.5",
+    "cross-env":            "^7.0.3", 
+
+
+    "socket.io":            "^4.7.5",
+
+    "pg":                   "^8.12.0",
+
+    "jsonwebtoken":         "^9.0.2",
+    "bcryptjs":             "^2.4.3",   
+
+    "helmet":               "^7.1.0",
+    "express-rate-limit":   "^7.3.1",
+
+    "joi":                  "^17.13.3",
+      
+    "firebase-admin":       "^12.2.0",
+
+    "winston":                    "^3.13.0",
+    "winston-daily-rotate-file":  "^5.0.0",
+
+    "swagger-jsdoc":        "^6.2.8",
+    "swagger-ui-express":   "^5.0.1",
+
+  
+    "uuid":                 "^10.0.0"  
+
+  },
+
+  "devDependencies": {
+    "nodemon":       "^3.1.4",
+    "jest":          "^29.7.0",
+    "@jest/globals": "^29.7.0"
+  },
+
+"jest": {
+  "transform": {},
+  "testEnvironment": "node",
+  "testMatch": ["**/tests/unit/**/*.test.js"]
+}
+
+}

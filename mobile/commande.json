@@ -1,0 +1,10 @@
+{
+  "adresse_livraison": "123 Rue de Paris, 75001 Paris",
+  "colis": [
+    {
+      "description": "Smartphone Samsung",
+      "poids": 0.5,
+      "quantite": 1
+    }
+  ]
+}

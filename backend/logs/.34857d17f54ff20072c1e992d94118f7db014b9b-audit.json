@@ -1,0 +1,35 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "D:\\Bosses\\DAII L3\\Projets\\Projet_flutter\\expressdeliv\\backend\\logs\\.34857d17f54ff20072c1e992d94118f7db014b9b-audit.json",
+    "files": [
+        {
+            "date": 1781431219788,
+            "name": "D:\\Bosses\\DAII L3\\Projets\\Projet_flutter\\expressdeliv\\backend\\logs\\combined-2026-06-14.log",
+            "hash": "f089607f02277385accd0fb1c805d4e34d44876cfdd112c64e19713f60ac5bbe"
+        },
+        {
+            "date": 1781523652214,
+            "name": "D:\\Bosses\\DAII L3\\Projets\\Projet_flutter\\expressdeliv\\backend\\logs\\combined-2026-06-15.log",
+            "hash": "b2b0f8be9412dc2586524e8ef852e91b37c34d12721c5fe7aa41884638f7217e"
+        },
+        {
+            "date": 1782373246773,
+            "name": "D:\\Bosses\\DAII L3\\Projets\\Projet_flutter\\expressdeliv\\backend\\logs\\combined-2026-06-25.log",
+            "hash": "5ba2d64b9042fa8ae2f011beaa509244645ac2257efa115f49d03382fb7ac94e"
+        },
+        {
+            "date": 1782486829103,
+            "name": "D:\\Bosses\\DAII L3\\Projets\\Projet_flutter\\expressdeliv\\backend\\logs\\combined-2026-06-26.log",
+            "hash": "d6c8841c1d227f79a95d7b930794f09fa595697a8e18be39dbfe5151bf611b1d"
+        },
+        {
+            "date": 1782548889765,
+            "name": "D:\\Bosses\\DAII L3\\Projets\\Projet_flutter\\expressdeliv\\backend\\logs\\combined-2026-06-27.log",
+            "hash": "7a6a136c47dba6d78af05b9753871ed46fd2d30a6cbefff58d30807c19a77df0"
+        }
+    ],
+    "hashType": "sha256"
+}
