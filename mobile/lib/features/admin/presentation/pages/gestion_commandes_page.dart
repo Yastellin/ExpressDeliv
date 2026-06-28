@@ -7,7 +7,6 @@ import '../../../../core/widgets/custom_snackbar.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../bloc/admin_cubit.dart';
 import '../../../commandes/data/models/commande.dart';
-
 class GestionCommandesPage extends StatefulWidget {
   const GestionCommandesPage({super.key});
 
@@ -264,7 +263,10 @@ class _GestionCommandesPageState extends State<GestionCommandesPage> {
             ),
             actions: [
               TextButton(
-                onPressed: () => Navigator.pop(dialogContext),
+                onPressed: () {
+                  Navigator.pop(dialogContext);
+                _cubit.chargerCommandes();
+                },
                 child: const Text('Annuler'),
               ),
             ],

@@ -5,11 +5,10 @@ import '../../../../core/widgets/custom_bottom_nav_bar.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../auth/presentation/bloc/auth_cubit.dart';
 import '../widgets/dashboard_page.dart';
-import '../widgets/orders_page.dart';
-import '../widgets/history_page.dart';
-import '../widgets/profile_page.dart';
+import '../widgets/profile_page.dart'; // ✅ Vérifiez que ProfilePage est bien importé
+import '../../../commandes/presentation/pages/commandes_page.dart';
 import '../../../livraisons/presentation/pages/missions_page.dart';
-import '../../../livraisons/presentation/bloc/missions_cubit.dart'; // Ajout
+import '../../../livraisons/presentation/bloc/missions_cubit.dart';
 import '../../../admin/presentation/pages/dashboard_admin_page.dart';
 import '../../../admin/presentation/pages/gestion_utilisateurs_page.dart';
 import '../../../admin/presentation/pages/gestion_commandes_page.dart';
@@ -23,13 +22,14 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
-  late MissionsCubit _missionsCubit; // Déclaration
+  late MissionsCubit _missionsCubit;
 
   @override
   void initState() {
     super.initState();
+    _currentIndex = 0; // forcer à 0
     _missionsCubit = MissionsCubit();
-    _missionsCubit.chargerMissions(); // Chargement initial
+    _missionsCubit.chargerMissions();
   }
 
   @override
@@ -49,7 +49,6 @@ class _HomePageState extends State<HomePage> {
     }
 
     final role = authState.user.role;
-
     List<Widget> pages;
     List<Map<String, dynamic>> navItems;
 
@@ -63,12 +62,12 @@ class _HomePageState extends State<HomePage> {
         MissionsPage(
           statutsFiltre: ['AFFECTEE'],
           title: 'Missions à accepter',
-          cubit: _missionsCubit, // Passage du cubit partagé
+          cubit: _missionsCubit,
         ),
         MissionsPage(
           statutsFiltre: ['EN_COURS', 'ACCEPTEE'],
           title: 'En cours',
-          cubit: _missionsCubit, // Passage du cubit partagé
+          cubit: _missionsCubit,
         ),
         const ProfilePage(),
       ];
@@ -95,15 +94,19 @@ class _HomePageState extends State<HomePage> {
       ];
       pages = [
         const DashboardPage(),
-        const OrdersPage(),
-        const HistoryPage(),
+        CommandesPage(statutsFiltre: null, title: 'Mes commandes'),
+        CommandesPage(statutsFiltre: ['LIVREE', 'ANNULEE'], title: 'Historique'),
         const ProfilePage(),
       ];
     }
 
+    // Sécurité : si l'index est hors limites, on le corrige
     if (_currentIndex >= pages.length) {
       _currentIndex = 0;
     }
+
+    // Log pour déboguer
+    print('🔵 Index: $_currentIndex, Page: ${pages[_currentIndex].runtimeType}');
 
     return Scaffold(
       backgroundColor: AppColors.background,
