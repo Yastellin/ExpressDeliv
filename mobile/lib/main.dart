@@ -6,11 +6,23 @@ import 'core/services/storage_service.dart';
 import 'features/auth/presentation/bloc/auth_cubit.dart';
 import 'features/auth/domain/repositories/auth_repository.dart';
 import 'features/auth/domain/repositories/auth_repository_impl.dart'; // ✅ Chemin corrigé
+import 'package:firebase_core/firebase_core.dart';
+import 'core/services/notification_service.dart';
+
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load();
   await StorageService.init();
+
+  // Initialiser Firebase seulement si ce n'est pas le web
+  if (!kIsWeb) {
+    await Firebase.initializeApp();
+    await NotificationService.init();
+  } else {
+    print('🔵 Mode web : Firebase désactivé');
+  }
 
   final AuthRepository authRepository = AuthRepositoryImpl();
   runApp(MyApp(authRepository: authRepository));

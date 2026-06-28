@@ -27,9 +27,8 @@ mixin _$Commande {
   DateTime get created_at => throw _privateConstructorUsedError;
   DateTime? get updated_at => throw _privateConstructorUsedError;
   String? get notes => throw _privateConstructorUsedError;
-  String? get client_nom => throw _privateConstructorUsedError; // ✅ Optionnel
-  String? get client_prenom =>
-      throw _privateConstructorUsedError; // ✅ Optionnel
+  String? get client_nom => throw _privateConstructorUsedError;
+  String? get client_prenom => throw _privateConstructorUsedError;
   List<Colis> get colis => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -248,12 +247,9 @@ class _$CommandeImpl implements _Commande {
   final String? notes;
   @override
   final String? client_nom;
-// ✅ Optionnel
   @override
   final String? client_prenom;
-// ✅ Optionnel
   final List<Colis> _colis;
-// ✅ Optionnel
   @override
   @JsonKey()
   List<Colis> get colis {
@@ -351,9 +347,9 @@ abstract class _Commande implements Commande {
   String? get notes;
   @override
   String? get client_nom;
-  @override // ✅ Optionnel
+  @override
   String? get client_prenom;
-  @override // ✅ Optionnel
+  @override
   List<Colis> get colis;
   @override
   @JsonKey(ignore: true)
@@ -371,9 +367,11 @@ mixin _$Colis {
   String get description => throw _privateConstructorUsedError;
   String get poids => throw _privateConstructorUsedError;
   String get prix_unitaire => throw _privateConstructorUsedError;
-  String get quantite => throw _privateConstructorUsedError;
+  String get quantite =>
+      throw _privateConstructorUsedError; // ✅ valeur par défaut si absent
   String? get dimensions => throw _privateConstructorUsedError;
   bool? get fragile => throw _privateConstructorUsedError;
+  DateTime? get created_at => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -392,7 +390,8 @@ abstract class $ColisCopyWith<$Res> {
       String prix_unitaire,
       String quantite,
       String? dimensions,
-      bool? fragile});
+      bool? fragile,
+      DateTime? created_at});
 }
 
 /// @nodoc
@@ -415,6 +414,7 @@ class _$ColisCopyWithImpl<$Res, $Val extends Colis>
     Object? quantite = null,
     Object? dimensions = freezed,
     Object? fragile = freezed,
+    Object? created_at = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -445,6 +445,10 @@ class _$ColisCopyWithImpl<$Res, $Val extends Colis>
           ? _value.fragile
           : fragile // ignore: cast_nullable_to_non_nullable
               as bool?,
+      created_at: freezed == created_at
+          ? _value.created_at
+          : created_at // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ) as $Val);
   }
 }
@@ -463,7 +467,8 @@ abstract class _$$ColisImplCopyWith<$Res> implements $ColisCopyWith<$Res> {
       String prix_unitaire,
       String quantite,
       String? dimensions,
-      bool? fragile});
+      bool? fragile,
+      DateTime? created_at});
 }
 
 /// @nodoc
@@ -484,6 +489,7 @@ class __$$ColisImplCopyWithImpl<$Res>
     Object? quantite = null,
     Object? dimensions = freezed,
     Object? fragile = freezed,
+    Object? created_at = freezed,
   }) {
     return _then(_$ColisImpl(
       id: null == id
@@ -514,6 +520,10 @@ class __$$ColisImplCopyWithImpl<$Res>
           ? _value.fragile
           : fragile // ignore: cast_nullable_to_non_nullable
               as bool?,
+      created_at: freezed == created_at
+          ? _value.created_at
+          : created_at // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }
@@ -526,9 +536,10 @@ class _$ColisImpl implements _Colis {
       required this.description,
       required this.poids,
       required this.prix_unitaire,
-      required this.quantite,
+      this.quantite = '1',
       this.dimensions,
-      this.fragile});
+      this.fragile,
+      this.created_at});
 
   factory _$ColisImpl.fromJson(Map<String, dynamic> json) =>
       _$$ColisImplFromJson(json);
@@ -542,15 +553,19 @@ class _$ColisImpl implements _Colis {
   @override
   final String prix_unitaire;
   @override
+  @JsonKey()
   final String quantite;
+// ✅ valeur par défaut si absent
   @override
   final String? dimensions;
   @override
   final bool? fragile;
+  @override
+  final DateTime? created_at;
 
   @override
   String toString() {
-    return 'Colis(id: $id, description: $description, poids: $poids, prix_unitaire: $prix_unitaire, quantite: $quantite, dimensions: $dimensions, fragile: $fragile)';
+    return 'Colis(id: $id, description: $description, poids: $poids, prix_unitaire: $prix_unitaire, quantite: $quantite, dimensions: $dimensions, fragile: $fragile, created_at: $created_at)';
   }
 
   @override
@@ -568,13 +583,15 @@ class _$ColisImpl implements _Colis {
                 other.quantite == quantite) &&
             (identical(other.dimensions, dimensions) ||
                 other.dimensions == dimensions) &&
-            (identical(other.fragile, fragile) || other.fragile == fragile));
+            (identical(other.fragile, fragile) || other.fragile == fragile) &&
+            (identical(other.created_at, created_at) ||
+                other.created_at == created_at));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, id, description, poids,
-      prix_unitaire, quantite, dimensions, fragile);
+      prix_unitaire, quantite, dimensions, fragile, created_at);
 
   @JsonKey(ignore: true)
   @override
@@ -596,9 +613,10 @@ abstract class _Colis implements Colis {
       required final String description,
       required final String poids,
       required final String prix_unitaire,
-      required final String quantite,
+      final String quantite,
       final String? dimensions,
-      final bool? fragile}) = _$ColisImpl;
+      final bool? fragile,
+      final DateTime? created_at}) = _$ColisImpl;
 
   factory _Colis.fromJson(Map<String, dynamic> json) = _$ColisImpl.fromJson;
 
@@ -612,10 +630,12 @@ abstract class _Colis implements Colis {
   String get prix_unitaire;
   @override
   String get quantite;
-  @override
+  @override // ✅ valeur par défaut si absent
   String? get dimensions;
   @override
   bool? get fragile;
+  @override
+  DateTime? get created_at;
   @override
   @JsonKey(ignore: true)
   _$$ColisImplCopyWith<_$ColisImpl> get copyWith =>

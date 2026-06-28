@@ -44,9 +44,12 @@ _$ColisImpl _$$ColisImplFromJson(Map<String, dynamic> json) => _$ColisImpl(
       description: json['description'] as String,
       poids: json['poids'] as String,
       prix_unitaire: json['prix_unitaire'] as String,
-      quantite: json['quantite'] as String,
+      quantite: json['quantite'] as String? ?? '1',
       dimensions: json['dimensions'] as String?,
       fragile: json['fragile'] as bool?,
+      created_at: json['created_at'] == null
+          ? null
+          : DateTime.parse(json['created_at'] as String),
     );
 
 Map<String, dynamic> _$$ColisImplToJson(_$ColisImpl instance) =>
@@ -58,4 +61,5 @@ Map<String, dynamic> _$$ColisImplToJson(_$ColisImpl instance) =>
       'quantite': instance.quantite,
       'dimensions': instance.dimensions,
       'fragile': instance.fragile,
+      'created_at': instance.created_at?.toIso8601String(),
     };

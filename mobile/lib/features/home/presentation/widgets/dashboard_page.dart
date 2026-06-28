@@ -9,6 +9,8 @@ import '../../../commandes/data/repositories/commande_repository_impl.dart';
 import '../../../commandes/data/models/commande.dart';
 import '../../../commandes/presentation/pages/create_order_page.dart';
 import '../../../commandes/presentation/pages/commande_detail_page.dart';
+import '../../../livraisons/presentation/pages/suivi_carte_page.dart';
+import '../../../../core/widgets/primary_button.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -185,7 +187,7 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   // --- CARTE INDIVIDUELLE (Radius 16, padding 16, couleurs strictes) ---
-Widget _buildCommandeCard(Commande commande) {
+  Widget _buildCommandeCard(Commande commande) {
   Color statusColor = AppColors.textSecondary;
   String statusText = commande.statut;
 
@@ -196,7 +198,7 @@ Widget _buildCommandeCard(Commande commande) {
     case 'ANNULEE':
       statusColor = AppColors.error;
       break;
-    case 'LIVRAISON_EN_COURS':
+    case 'EN_COURS':
       statusColor = AppColors.primary;
       break;
     default:
@@ -206,113 +208,136 @@ Widget _buildCommandeCard(Commande commande) {
   final nbColis = commande.colis.length;
 
   return GestureDetector(
-    onTap: () {
-      final shouldRefresh =  Navigator.push(
+    onTap: () async {
+      final shouldRefresh = await Navigator.push(
         context,
         MaterialPageRoute(
           builder: (_) => CommandeDetailPage(commandeId: commande.id),
         ),
       );
       if (shouldRefresh == true) {
-    // Recharger les commandes
         context.read<DashboardCubit>().chargerCommandes();
       }
     },
-    child: Container(  // <-- bien écrire "child:" avec deux-points, pas d'espace avant ?
-      // En Dart, on écrit "child:" (avec deux-points)
-      // Mais l'erreur était probablement une virgule manquante après le child ou une parenthèse fermante.
+    child: Container(
       decoration: BoxDecoration(
         color: AppColors.card,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: AppColors.border, width: 1),
       ),
       padding: const EdgeInsets.all(AppSpacing.md),
-      child: Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            width: 48,
-            height: 48,
-            decoration: BoxDecoration(
-              color: statusColor.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Icon(
-              commande.statut == 'LIVREE'
-                  ? LucideIcons.check
-                  : commande.statut == 'LIVRAISON_EN_COURS'
-                      ? LucideIcons.truck
-                      : LucideIcons.package,
-              color: statusColor,
-              size: 24,
-            ),
-          ),
-          const SizedBox(width: AppSpacing.sm),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          // --- Ligne supérieure : icône + détails ---
+          Row(
+            children: [
+              Container(
+                width: 48,
+                height: 48,
+                decoration: BoxDecoration(
+                  color: statusColor.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(
+                  commande.statut == 'LIVREE'
+                      ? LucideIcons.check
+                      : commande.statut == 'EN_COURS'
+                          ? LucideIcons.truck
+                          : LucideIcons.package,
+                  color: statusColor,
+                  size: 24,
+                ),
+              ),
+              const SizedBox(width: AppSpacing.sm),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Commande #${commande.id.substring(0, 8)}',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: statusColor.withValues(alpha: 0.1),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Text(
+                            statusText,
+                            style: TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w500,
+                              color: statusColor,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 4),
+                    Row(
+                      children: [
+                        Icon(LucideIcons.calendar, size: 14, color: AppColors.textSecondary),
+                        const SizedBox(width: 4),
+                        Text(
+                          '${commande.created_at.day}/${commande.created_at.month}/${commande.created_at.year}',
+                          style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
+                        ),
+                        const SizedBox(width: AppSpacing.sm),
+                        Icon(LucideIcons.box, size: 14, color: AppColors.textSecondary),
+                        const SizedBox(width: 4),
+                        Text(
+                          '$nbColis article${nbColis > 1 ? 's' : ''}',
+                          style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 4),
                     Text(
-                      'Commande #${commande.id.substring(0, 8)}',
+                      '${double.parse(commande.montant_total).toStringAsFixed(0)} Ar',
                       style: TextStyle(
                         fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.textPrimary,
-                      ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: statusColor.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Text(
-                        statusText,
-                        style: TextStyle(
-                          fontSize: 10,
-                          fontWeight: FontWeight.w500,
-                          color: statusColor,
-                        ),
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.primary,
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 4),
-                Row(
-                  children: [
-                    Icon(LucideIcons.calendar, size: 14, color: AppColors.textSecondary),
-                    const SizedBox(width: 4),
-                  Text(
-                    '${commande.created_at.day}/${commande.created_at.month}/${commande.created_at.year}',
-                      style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
-                    ),
-                    const SizedBox(width: AppSpacing.sm),
-                    Icon(LucideIcons.box, size: 14, color: AppColors.textSecondary),
-                    const SizedBox(width: 4),
-                    Text(
-                      '$nbColis article${nbColis > 1 ? 's' : ''}',
-                      style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  '${double.parse(commande.montant_total).toStringAsFixed(2)} Ar',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.primary,
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
+          // --- Bouton "Suivre en direct" (uniquement si statut = LIVRAISON_EN_COURS) ---
+          if (commande.statut == 'EN_COURS') ...[
+            const SizedBox(height: AppSpacing.sm),
+            PrimaryButton(
+              label: 'Suivre en direct',
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => SuiviCartePage(
+                      livraisonId: commande.id,
+                      adresseLivraison: commande.adresse_livraison,
+                      initialLat: -18.8792,
+                      initialLng: 47.5079,
+                    ),
+                  ),
+                );
+              },
+            ),
+          ],
         ],
       ),
     ),
-  ); // <-- Fermeture du GestureDetector
+  );
 }
   // --- ETAT VIDE ---
   Widget _buildEmptyState() {

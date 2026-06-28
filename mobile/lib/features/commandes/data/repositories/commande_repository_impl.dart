@@ -62,17 +62,20 @@ Future<Commande> createCommande(String adresse, List<Map<String, dynamic>> colis
 @override
 Future<Commande> getCommande(String id) async {
   try {
+    print('[Repo] Récupération commande $id');
     final response = await _dio.get('/commandes/$id');
+    print('[Repo] Réponse brute : ${response.data}'); // <-- AJOUT
     final data = response.data;
-
     if (data is Map<String, dynamic> && data.containsKey('data')) {
       return Commande.fromJson(data['data'] as Map<String, dynamic>);
     } else {
       throw Exception('Format de réponse inattendu');
     }
   } on DioException catch (e) {
+    print('[Repo] Erreur Dio : ${e.response?.data}');
     throw Exception('Erreur réseau : ${e.message}');
   } catch (e) {
+    print('[Repo] Erreur inattendue : $e');
     throw Exception('Erreur inattendue');
   }
 }

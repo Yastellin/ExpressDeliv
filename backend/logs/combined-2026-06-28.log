@@ -1,0 +1,23 @@
+{"level":"info","message":"Nouvelle connexion PostgreSQL établie","service":"database","timestamp":"2026-06-28T03:33:43.942Z"}
+{"level":"info","message":"Utilisateur connecté","role":"CLIENT","service":"authService","timestamp":"2026-06-28T03:33:44.596Z","userId":"1902f2f2-1954-4b92-a96f-520cc2bdd525"}
+{"code":"FORBIDDEN","level":"warn","message":"Erreur métier Accès refusé : droits insuffisants","method":"GET","service":"errorHandler","timestamp":"2026-06-28T03:33:45.417Z","url":"/api/v1/livraisons/mes-missions"}
+{"level":"info","message":"Nouvelle connexion PostgreSQL établie","service":"database","timestamp":"2026-06-28T03:34:39.019Z"}
+{"level":"info","message":"Nouvelle connexion PostgreSQL établie","service":"database","timestamp":"2026-06-28T05:43:40.324Z"}
+{"level":"info","message":"Utilisateur connecté","role":"CLIENT","service":"authService","timestamp":"2026-06-28T05:43:41.110Z","userId":"1902f2f2-1954-4b92-a96f-520cc2bdd525"}
+{"code":"FORBIDDEN","level":"warn","message":"Erreur métier Accès refusé : droits insuffisants","method":"GET","service":"errorHandler","timestamp":"2026-06-28T05:43:41.683Z","url":"/api/v1/livraisons/mes-missions"}
+{"level":"info","message":"Nouvelle connexion PostgreSQL établie","service":"database","timestamp":"2026-06-28T05:44:17.210Z"}
+{"level":"info","message":"Nouvelle connexion PostgreSQL établie","service":"database","timestamp":"2026-06-28T05:53:48.576Z"}
+{"level":"info","message":"Utilisateur connecté","role":"CLIENT","service":"authService","timestamp":"2026-06-28T05:53:49.166Z","userId":"1902f2f2-1954-4b92-a96f-520cc2bdd525"}
+{"code":"FORBIDDEN","level":"warn","message":"Erreur métier Accès refusé : droits insuffisants","method":"GET","service":"errorHandler","timestamp":"2026-06-28T05:53:49.881Z","url":"/api/v1/livraisons/mes-missions"}
+{"level":"info","message":"Nouvelle connexion PostgreSQL établie","service":"database","timestamp":"2026-06-28T05:57:10.933Z"}
+{"level":"info","message":"Nouvelle connexion PostgreSQL établie","service":"database","timestamp":"2026-06-28T06:08:59.254Z"}
+{"level":"info","message":"Utilisateur connecté","role":"CLIENT","service":"authService","timestamp":"2026-06-28T06:08:59.916Z","userId":"1902f2f2-1954-4b92-a96f-520cc2bdd525"}
+{"code":"FORBIDDEN","level":"warn","message":"Erreur métier Accès refusé : droits insuffisants","method":"GET","service":"errorHandler","timestamp":"2026-06-28T06:09:00.510Z","url":"/api/v1/livraisons/mes-missions"}
+{"level":"info","message":"Nouvelle connexion PostgreSQL établie","service":"database","timestamp":"2026-06-28T06:22:46.669Z"}
+{"level":"info","message":"Utilisateur connecté","role":"CLIENT","service":"authService","timestamp":"2026-06-28T06:22:47.251Z","userId":"1902f2f2-1954-4b92-a96f-520cc2bdd525"}
+{"code":"FORBIDDEN","level":"warn","message":"Erreur métier Accès refusé : droits insuffisants","method":"GET","service":"errorHandler","timestamp":"2026-06-28T06:22:47.835Z","url":"/api/v1/livraisons/mes-missions"}
+{"level":"info","message":"Nouvelle connexion PostgreSQL établie","service":"database","timestamp":"2026-06-28T06:32:12.104Z"}
+{"level":"info","message":"Utilisateur connecté","role":"CLIENT","service":"authService","timestamp":"2026-06-28T06:32:12.737Z","userId":"1902f2f2-1954-4b92-a96f-520cc2bdd525"}
+{"code":"FORBIDDEN","level":"warn","message":"Erreur métier Accès refusé : droits insuffisants","method":"GET","service":"errorHandler","timestamp":"2026-06-28T06:32:13.345Z","url":"/api/v1/livraisons/mes-missions"}
+{"level":"info","message":"Nouvelle connexion PostgreSQL établie","service":"database","timestamp":"2026-06-28T06:39:57.312Z"}
+{"level":"info","message":"Utilisateur déconnecté","service":"authService","timestamp":"2026-06-28T06:39:57.325Z","userId":"1902f2f2-1954-4b92-a96f-520cc2bdd525"}

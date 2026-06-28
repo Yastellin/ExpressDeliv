@@ -4,6 +4,9 @@ import '../../data/models/auth_request.dart';
 import '../../domain/repositories/auth_repository.dart';
 import 'dart:convert';  // <-- pour jsonEncode
 import '../../../../core/services/storage_service.dart';  // <-- pour StorageService
+import '../../../../core/services/notification_service.dart';
+import '../../../../core/services/socket_service.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
@@ -16,6 +19,13 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       final response = await _repository.login(LoginRequest(email: email, password: password));
       emit(AuthSuccess(response.user));
+      SocketService.init(response.user.id, response.user.role);
+      if (!kIsWeb) {
+        final token = await NotificationService.getToken();
+        if (token != null) {
+          await _repository.registerFcmToken(token);
+        }
+      }
     } catch (e) {
       emit(AuthError(e.toString()));
     }

@@ -90,4 +90,14 @@ Future<UserDto> updateProfile(Map<String, dynamic> data) async {
     throw Exception('Erreur inattendue');
   }
 }
+
+@override
+Future<void> registerFcmToken(String token) async {
+  try {
+    await _dio.post('/notifications/token', data: {'token': token});
+    print('Token FCM enregistré');
+  } catch (e) {
+    print('Erreur enregistrement token FCM : $e');
+  }
+}
 }

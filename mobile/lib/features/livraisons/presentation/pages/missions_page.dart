@@ -287,7 +287,6 @@ class _MissionsPageState extends State<MissionsPage> {
               ],
             ),
           ],
-          // Après le bloc if (isPending) ...
           if (mission.statut == 'EN_COURS' || mission.statut == 'ACCEPTEE') ...[
             const SizedBox(height: AppSpacing.sm),
             PrimaryButton(
@@ -301,6 +300,20 @@ class _MissionsPageState extends State<MissionsPage> {
                 );
               },
             ),
+            if (mission.statut == 'ACCEPTEE') ...[
+              const SizedBox(height: AppSpacing.sm),
+              PrimaryButton(
+                label: 'Démarrer le suivi (GPS)',
+                onPressed: () async {
+                  // Mettre à jour le statut de la livraison vers EN_COURS
+                  await _cubit.updateStatut(mission.id, 'EN_COURS');
+                  // Démarrer l'envoi de la position GPS
+                  await _cubit.startTracking(mission.id);
+                  // Recharger les missions pour mettre à jour l'affichage
+                  await _cubit.chargerMissions();
+                },
+              ),
+            ],
           ],
         ],
       ),

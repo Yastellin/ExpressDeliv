@@ -13,8 +13,8 @@ class Commande with _$Commande {
     required DateTime created_at,
     DateTime? updated_at,
     String? notes,
-    String? client_nom,       // ✅ Optionnel
-    String? client_prenom,    // ✅ Optionnel
+    String? client_nom,
+    String? client_prenom,
     @Default([]) List<Colis> colis,
   }) = _Commande;
 
@@ -29,9 +29,10 @@ class Colis with _$Colis {
     required String description,
     required String poids,
     required String prix_unitaire,
-    required String quantite,
+    @Default('1') String quantite, // ✅ valeur par défaut si absent
     String? dimensions,
     bool? fragile,
+    DateTime? created_at, // ✅ optionnel
   }) = _Colis;
 
   factory Colis.fromJson(Map<String, dynamic> json) => _$ColisFromJson(json);

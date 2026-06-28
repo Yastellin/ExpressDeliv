@@ -3,6 +3,10 @@ import 'package:equatable/equatable.dart';
 import '../../data/models/livraison.dart';
 import '../../domain/repositories/livraison_repository.dart';
 import '../../data/repositories/livraison_repository_impl.dart';
+import 'dart:async';
+import '../../../../core/services/location_service.dart';
+import '../../../../core/services/socket_service.dart';
+import 'package:geolocator/geolocator.dart';
 
 // ─── States ────────────────────────────────────────────────
 abstract class MissionsState extends Equatable {
@@ -38,7 +42,8 @@ class MissionActionLoading extends MissionsState {
 // ─── Cubit ──────────────────────────────────────────────────
 class MissionsCubit extends Cubit<MissionsState> {
   final LivraisonRepository _repository;
-
+  StreamSubscription<Position>? _positionSubscription;
+  String? _currentLivraisonId;
   MissionsCubit() : _repository = LivraisonRepositoryImpl(), super(MissionsInitial());
 
   Future<void> chargerMissions() async {
@@ -95,6 +100,7 @@ class MissionsCubit extends Cubit<MissionsState> {
   print('[Cubit] Soumission preuve pour $livraisonId');
   try {
     await _repository.soumettrePreuve(livraisonId, preuveData);
+    stopTracking();
     // Recharger la liste des missions pour mettre à jour le statut
     await chargerMissions();
     print('[Cubit] Preuve soumise, missions rechargées');
@@ -103,4 +109,39 @@ class MissionsCubit extends Cubit<MissionsState> {
     print(' [Cubit] Erreur : $e');
   }
 }
+
+  // Nouvelle méthode pour démarrer le tracking sur une livraison
+  Future<void> startTracking(String livraisonId) async {
+    _currentLivraisonId = livraisonId;
+    final hasPermission = await LocationService.requestPermission();
+    if (!hasPermission) {
+      emit(MissionsError('Permission GPS refusée'));
+      return;
+    }
+
+    _positionSubscription = LocationService.getPositionStream().listen((position) {
+      if (_currentLivraisonId != null) {
+        SocketService.sendGpsUpdate(
+          _currentLivraisonId!,
+          position.latitude,
+          position.longitude,
+        );
+        print('📍 Position envoyée : (${position.latitude}, ${position.longitude})');
+      }
+    });
+  }
+
+  // Nouvelle méthode pour arrêter le tracking
+  void stopTracking() {
+    _positionSubscription?.cancel();
+    _positionSubscription = null;
+    _currentLivraisonId = null;
+    print('📍 Tracking GPS arrêté');
+  }
+
+  @override
+  Future<void> close() {
+    stopTracking();
+    return super.close();
+  }
 }
