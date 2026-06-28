@@ -62,12 +62,16 @@ Future<Commande> createCommande(String adresse, List<Map<String, dynamic>> colis
 @override
 Future<Commande> getCommande(String id) async {
   try {
-    print('[Repo] Récupération commande $id');
     final response = await _dio.get('/commandes/$id');
-    print('[Repo] Réponse brute : ${response.data}'); // <-- AJOUT
     final data = response.data;
     if (data is Map<String, dynamic> && data.containsKey('data')) {
-      return Commande.fromJson(data['data'] as Map<String, dynamic>);
+      final commandeData = data['data'] as Map<String, dynamic>;
+      // Extraire l'ID de la livraison si présent
+      if (commandeData.containsKey('livraison') && commandeData['livraison'] != null) {
+        final livraison = commandeData['livraison'] as Map<String, dynamic>;
+        commandeData['livraisonId'] = livraison['id'];
+      }
+      return Commande.fromJson(commandeData);
     } else {
       throw Exception('Format de réponse inattendu');
     }

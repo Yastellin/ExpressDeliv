@@ -15,6 +15,7 @@ class Commande with _$Commande {
     String? notes,
     String? client_nom,
     String? client_prenom,
+    String? livraisonId,
     @Default([]) List<Colis> colis,
   }) = _Commande;
 

@@ -1,21 +1,38 @@
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'storage_service.dart';
 
 class SocketService {
   static IO.Socket? _socket;
   static String? _currentRoom;
 
-  // Initialisation et connexion au serveur
   static void init(String userId, String role) {
-    if (_socket != null && _socket!.connected) {
-      print('🔌 Socket déjà connecté');
+    print('[Socket] init appelé avec userId: $userId, role: $role');
+    
+    final token = StorageService.getAccessToken();
+    print('[Socket] Token récupéré : ${token != null ? 'OK (${token.substring(0, 20)}...)' : 'NULL'}');
+    
+    if (token == null) {
+      print('[Socket] Token manquant, impossible de se connecter');
       return;
     }
 
-    final uri = dotenv.env['API_BASE_URL'] ?? 'http://localhost:3000';
-    _socket = IO.io(uri, <String, dynamic>{
+    if (_socket != null && _socket!.connected) {
+      print('[Socket] Déjà connecté');
+      return;
+    }
+
+    // Supprimer le suffixe /api/v1 pour que le socket utilise la racine
+    final rawUrl = dotenv.env['API_BASE_URL'] ?? 'http://localhost:3000';
+    final baseUrl = rawUrl.replaceAll('/api/v1', '');
+    print('[Socket] Tentative de connexion à $baseUrl');
+
+    _socket = IO.io(baseUrl, <String, dynamic>{
       'transports': ['websocket'],
       'autoConnect': true,
+      'auth': {
+        'token': token,
+      },
       'query': {
         'userId': userId,
         'role': role,
@@ -23,16 +40,80 @@ class SocketService {
     });
 
     _socket!.onConnect((_) {
-      print('✅ Socket.IO connecté');
+      print('✅ [Socket] Socket.IO connecté');
     });
 
+  _socket!.onConnectError((error) {
+    print('❌ [Socket] Erreur de connexion : $error');
+    // Afficher plus de détails
+    if (error is Exception) {
+      print('❌ Détail : ${error.toString()}');
+    }
+  });
+
+
     _socket!.onDisconnect((_) {
-      print('❌ Socket.IO déconnecté');
+      print('❌ [Socket] Socket.IO déconnecté');
     });
 
     _socket!.onError((error) {
-      print('⚠️ Erreur Socket.IO : $error');
+      print('⚠️ [Socket] Erreur Socket.IO : $error');
     });
+  }
+
+  // ─── Chat ──────────────────────────────────────────────────
+  static void joinChat(String livraisonId) {
+    if (_socket != null && _socket!.connected) {
+      _socket!.emit('chat:join', { 'livraison_id': livraisonId });
+      print('💬 [Socket] Rejoint le chat de la livraison $livraisonId');
+    } else {
+      print('❌ [Socket] Socket non connecté');
+    }
+  }
+
+  // ─── Chat ──────────────────────────────────────────────────
+  static void listenToChatHistory(Function(Map<String, dynamic>) onHistory) {
+    if (_socket != null) {
+      _socket!.on('chat:history', (data) {
+        print('📜 [Socket] chat:history reçu : $data');
+        onHistory(data as Map<String, dynamic>);
+      });
+    }
+  }
+
+  static void listenToNewChatMessage(Function(Map<String, dynamic>) onMessage) {
+    if (_socket != null) {
+      _socket!.on('chat:message', (data) {
+        print('💬 [Socket] chat:message reçu : $data');
+        onMessage(data as Map<String, dynamic>);
+      });
+    }
+  }
+
+  static void listenToChatError(Function(Map<String, dynamic>) onError) {
+    if (_socket != null) {
+      _socket!.on('chat:error', (data) {
+        print('⚠️ [Socket] chat:error reçu : $data');
+        onError(data as Map<String, dynamic>);
+      });
+    }
+  }
+
+  static void sendChatMessage(String livraisonId, String contenu) {
+    if (_socket != null && _socket!.connected) {
+      _socket!.emit('chat:message', {
+        'livraison_id': livraisonId,
+        'contenu': contenu,
+      });
+      print('💬 [Socket] chat:message envoyé');
+    }
+  }
+
+  static void markChatAsRead(String livraisonId) {
+    if (_socket != null && _socket!.connected) {
+      _socket!.emit('chat:read', { 'livraison_id': livraisonId });
+      print('👁️ [Socket] chat:read envoyé');
+    }
   }
 
   // Rejoindre une room (ex: pour le suivi d'une livraison)
@@ -40,7 +121,7 @@ class SocketService {
     if (_socket != null && _socket!.connected) {
       _currentRoom = roomId;
       _socket!.emit('join_room', roomId);
-      print('📡 Rejoint la room : $roomId');
+      print('Rejoint la room : $roomId');
     }
   }
 
@@ -48,7 +129,7 @@ class SocketService {
   static void leaveRoom() {
     if (_socket != null && _socket!.connected && _currentRoom != null) {
       _socket!.emit('leave_room', _currentRoom);
-      print('📡 Quitté la room : $_currentRoom');
+      print('Quitté la room : $_currentRoom');
       _currentRoom = null;
     }
   }
@@ -57,7 +138,7 @@ class SocketService {
   static void listenToGpsUpdates(Function(Map<String, dynamic>) onUpdate) {
     if (_socket != null) {
       _socket!.on('gps_update', (data) {
-        print('📍 Mise à jour GPS reçue : $data');
+        print('Mise à jour GPS reçue : $data');
         onUpdate(data as Map<String, dynamic>);
       });
     }
@@ -85,17 +166,6 @@ class SocketService {
     }
   }
 
-  // Envoyer un message chat
-  static void sendChatMessage(String livraisonId, String message, String senderRole) {
-    if (_socket != null && _socket!.connected) {
-      _socket!.emit('chat_message', {
-        'livraisonId': livraisonId,
-        'message': message,
-        'senderRole': senderRole,
-      });
-    }
-  }
-
   // Déconnexion propre
   static void disconnect() {
     leaveRoom();
@@ -106,4 +176,20 @@ class SocketService {
       print('🔌 Socket déconnecté proprement');
     }
   }
+
+  // Joindre une room pour le chat (différent de join_room générique)
+  static void joinChatRoom(String livraisonId) {
+    if (_socket != null && _socket!.connected) {
+      _socket!.emit('chat:join', { 'livraison_id': livraisonId });
+      print('📡 [Socket] Rejoint le chat de la livraison $livraisonId');
+    }
+  }
+
+// Quitter le chat (optionnel)
+  static void leaveChatRoom(String livraisonId) {
+    if (_socket != null && _socket!.connected) {
+      _socket!.emit('chat:leave', { 'livraison_id': livraisonId });
+    }
+  }
+
 }

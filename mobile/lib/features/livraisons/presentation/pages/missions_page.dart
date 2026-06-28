@@ -8,7 +8,8 @@ import '../../../../core/widgets/primary_button.dart';
 import '../bloc/missions_cubit.dart';
 import '../../data/models/livraison.dart'; //Import du modèle
 import './preuve_page.dart';
-
+import '../../../auth/presentation/bloc/auth_cubit.dart';
+import '../../../livraisons/presentation/pages/chat_page.dart';
 class MissionsPage extends StatefulWidget {
   final List<String>? statutsFiltre;
   final String title;
@@ -300,6 +301,27 @@ class _MissionsPageState extends State<MissionsPage> {
                 );
               },
             ),
+
+                        // --- Bouton Chat ---
+            if (mission.statut == 'EN_COURS')
+              Padding(
+                padding: const EdgeInsets.only(top: AppSpacing.sm),
+                child: PrimaryButton(
+                  label: '💬 Chat avec le client',
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => ChatPage(
+                          livraisonId: mission.id,
+                          currentUserId: (context.read<AuthCubit>().state as AuthSuccess).user.id,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+
             if (mission.statut == 'ACCEPTEE') ...[
               const SizedBox(height: AppSpacing.sm),
               PrimaryButton(

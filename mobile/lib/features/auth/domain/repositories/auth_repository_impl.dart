@@ -26,7 +26,9 @@ Future<AuthResponse> login(LoginRequest request) async {
     final data = wrapper.data;
     
     // Sauvegarde des tokens
+    print('[AuthRepo] Sauvegarde des tokens');
     await StorageService.saveTokens(data.accessToken, data.refreshToken);
+    print('[AuthRepo] Tokens sauvegardés');
     await StorageService.saveUser(jsonEncode(data.user.toJson()));
     
     // On retourne un objet AuthResponse (si vous voulez garder le même type)

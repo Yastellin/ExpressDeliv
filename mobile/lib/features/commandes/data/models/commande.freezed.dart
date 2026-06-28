@@ -29,6 +29,7 @@ mixin _$Commande {
   String? get notes => throw _privateConstructorUsedError;
   String? get client_nom => throw _privateConstructorUsedError;
   String? get client_prenom => throw _privateConstructorUsedError;
+  String? get livraisonId => throw _privateConstructorUsedError;
   List<Colis> get colis => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -52,6 +53,7 @@ abstract class $CommandeCopyWith<$Res> {
       String? notes,
       String? client_nom,
       String? client_prenom,
+      String? livraisonId,
       List<Colis> colis});
 }
 
@@ -77,6 +79,7 @@ class _$CommandeCopyWithImpl<$Res, $Val extends Commande>
     Object? notes = freezed,
     Object? client_nom = freezed,
     Object? client_prenom = freezed,
+    Object? livraisonId = freezed,
     Object? colis = null,
   }) {
     return _then(_value.copyWith(
@@ -116,6 +119,10 @@ class _$CommandeCopyWithImpl<$Res, $Val extends Commande>
           ? _value.client_prenom
           : client_prenom // ignore: cast_nullable_to_non_nullable
               as String?,
+      livraisonId: freezed == livraisonId
+          ? _value.livraisonId
+          : livraisonId // ignore: cast_nullable_to_non_nullable
+              as String?,
       colis: null == colis
           ? _value.colis
           : colis // ignore: cast_nullable_to_non_nullable
@@ -142,6 +149,7 @@ abstract class _$$CommandeImplCopyWith<$Res>
       String? notes,
       String? client_nom,
       String? client_prenom,
+      String? livraisonId,
       List<Colis> colis});
 }
 
@@ -165,6 +173,7 @@ class __$$CommandeImplCopyWithImpl<$Res>
     Object? notes = freezed,
     Object? client_nom = freezed,
     Object? client_prenom = freezed,
+    Object? livraisonId = freezed,
     Object? colis = null,
   }) {
     return _then(_$CommandeImpl(
@@ -204,6 +213,10 @@ class __$$CommandeImplCopyWithImpl<$Res>
           ? _value.client_prenom
           : client_prenom // ignore: cast_nullable_to_non_nullable
               as String?,
+      livraisonId: freezed == livraisonId
+          ? _value.livraisonId
+          : livraisonId // ignore: cast_nullable_to_non_nullable
+              as String?,
       colis: null == colis
           ? _value._colis
           : colis // ignore: cast_nullable_to_non_nullable
@@ -225,6 +238,7 @@ class _$CommandeImpl implements _Commande {
       this.notes,
       this.client_nom,
       this.client_prenom,
+      this.livraisonId,
       final List<Colis> colis = const []})
       : _colis = colis;
 
@@ -249,6 +263,8 @@ class _$CommandeImpl implements _Commande {
   final String? client_nom;
   @override
   final String? client_prenom;
+  @override
+  final String? livraisonId;
   final List<Colis> _colis;
   @override
   @JsonKey()
@@ -260,7 +276,7 @@ class _$CommandeImpl implements _Commande {
 
   @override
   String toString() {
-    return 'Commande(id: $id, statut: $statut, adresse_livraison: $adresse_livraison, montant_total: $montant_total, created_at: $created_at, updated_at: $updated_at, notes: $notes, client_nom: $client_nom, client_prenom: $client_prenom, colis: $colis)';
+    return 'Commande(id: $id, statut: $statut, adresse_livraison: $adresse_livraison, montant_total: $montant_total, created_at: $created_at, updated_at: $updated_at, notes: $notes, client_nom: $client_nom, client_prenom: $client_prenom, livraisonId: $livraisonId, colis: $colis)';
   }
 
   @override
@@ -283,6 +299,8 @@ class _$CommandeImpl implements _Commande {
                 other.client_nom == client_nom) &&
             (identical(other.client_prenom, client_prenom) ||
                 other.client_prenom == client_prenom) &&
+            (identical(other.livraisonId, livraisonId) ||
+                other.livraisonId == livraisonId) &&
             const DeepCollectionEquality().equals(other._colis, _colis));
   }
 
@@ -299,6 +317,7 @@ class _$CommandeImpl implements _Commande {
       notes,
       client_nom,
       client_prenom,
+      livraisonId,
       const DeepCollectionEquality().hash(_colis));
 
   @JsonKey(ignore: true)
@@ -326,6 +345,7 @@ abstract class _Commande implements Commande {
       final String? notes,
       final String? client_nom,
       final String? client_prenom,
+      final String? livraisonId,
       final List<Colis> colis}) = _$CommandeImpl;
 
   factory _Commande.fromJson(Map<String, dynamic> json) =
@@ -349,6 +369,8 @@ abstract class _Commande implements Commande {
   String? get client_nom;
   @override
   String? get client_prenom;
+  @override
+  String? get livraisonId;
   @override
   List<Colis> get colis;
   @override

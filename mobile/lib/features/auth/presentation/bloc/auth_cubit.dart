@@ -19,6 +19,7 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       final response = await _repository.login(LoginRequest(email: email, password: password));
       emit(AuthSuccess(response.user));
+      print('[AuthCubit] Appel de SocketService.init avec userId: ${response.user.id}');
       SocketService.init(response.user.id, response.user.role);
       if (!kIsWeb) {
         final token = await NotificationService.getToken();

@@ -8,6 +8,8 @@ import '../../../../core/widgets/custom_snackbar.dart';
 import '../bloc/detail_order_cubit.dart';
 import '../../data/models/commande.dart';
 import '../../../home/presentation/pages/home_page.dart';
+import '../../../auth/presentation/bloc/auth_cubit.dart';
+import '../../../livraisons/presentation/pages/chat_page.dart';
 
 class CommandeDetailPage extends StatelessWidget {
   final String commandeId;
@@ -126,7 +128,7 @@ class CommandeDetailPage extends StatelessWidget {
       case 'ANNULEE':
         statusColor = AppColors.error;
         break;
-      case 'LIVRAISON_EN_COURS':
+      case 'EN_COURS':
         statusColor = AppColors.primary;
         break;
       default:
@@ -376,6 +378,28 @@ class CommandeDetailPage extends StatelessWidget {
                         },
                 );
               },
+            ),
+            // --- Bouton Chat (si la commande est en cours) ---
+          if (commande.statut == 'EN_COURS' || commande.statut == 'LIVRAISON_EN_COURS')
+            Padding(
+              padding: const EdgeInsets.only(top: AppSpacing.sm),
+              child: PrimaryButton(
+                label: '💬 Chat avec le livreur',
+                onPressed: () {
+                  // Utilisez l'ID de la livraison si disponible, sinon l'ID de la commande
+                  final livraisonId = commande.livraisonId ?? commande.id; // À adapter selon votre modèle
+                  print('🔍 [CommandeDetail] livraisonId = $livraisonId, commande.id = ${commande.id}');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => ChatPage(
+                        livraisonId: livraisonId,
+                        currentUserId: (context.read<AuthCubit>().state as AuthSuccess).user.id,
+                      ),
+                    ),
+                  );
+                },
+              ),
             ),
         ],
       ),

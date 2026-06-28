@@ -30,33 +30,33 @@ export const initSocket = (httpServer) => {
   // ── Middleware JWT Socket.io ────────────────────────────
   // Le client Flutter envoie le token dans handshake.auth :
   // socket = io(url, { auth: { token: accessToken } })
-  io.use((socket, next) => {
-    const token = socket.handshake.auth?.token
+io.use((socket, next) => {
+  const token = socket.handshake.auth?.token
                 || socket.handshake.headers?.authorization?.split(' ')[1];
 
-    if (!token) {
-      logger.warn('Connexion socket refusée — token manquant', {
-        socketId: socket.id,
-        ip: socket.handshake.address,
-      });
-      return next(new Error('TOKEN_MISSING'));
-    }
+  if (!token) {
+    logger.warn('Connexion socket refusée — token manquant', {
+      socketId: socket.id,
+      ip: socket.handshake.address,
+    });
+    return next(new Error('TOKEN_MISSING'));
+  }
 
-    try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      // Injecte les données utilisateur dans le socket
-      socket.data.userId = decoded.id;
-      socket.data.role   = decoded.role;
-      socket.data.email  = decoded.email;
-      next();
-    } catch (err) {
-      logger.warn('Connexion socket refusée — token invalide', {
-        socketId: socket.id,
-        error: err.message,
-      });
-      next(new Error('TOKEN_INVALID'));
-    }
-  });
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    socket.data.userId = decoded.id;
+    socket.data.role   = decoded.role;
+    socket.data.email  = decoded.email;
+    next();
+  } catch (err) {
+    // ✅ Corrigé : utiliser err.message au lieu de decoded
+    logger.warn('Connexion socket refusée — token invalide', {
+      socketId: socket.id,
+      error: err.message,    // <-- CHANGEMENT ICI
+    });
+    next(new Error('TOKEN_INVALID'));
+  }
+});
 
   // ── Connexion établie ───────────────────────────────────
   io.on('connection', (socket) => {

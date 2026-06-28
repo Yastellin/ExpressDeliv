@@ -19,6 +19,7 @@ _$CommandeImpl _$$CommandeImplFromJson(Map<String, dynamic> json) =>
       notes: json['notes'] as String?,
       client_nom: json['client_nom'] as String?,
       client_prenom: json['client_prenom'] as String?,
+      livraisonId: json['livraisonId'] as String?,
       colis: (json['colis'] as List<dynamic>?)
               ?.map((e) => Colis.fromJson(e as Map<String, dynamic>))
               .toList() ??
@@ -36,6 +37,7 @@ Map<String, dynamic> _$$CommandeImplToJson(_$CommandeImpl instance) =>
       'notes': instance.notes,
       'client_nom': instance.client_nom,
       'client_prenom': instance.client_prenom,
+      'livraisonId': instance.livraisonId,
       'colis': instance.colis,
     };
 
