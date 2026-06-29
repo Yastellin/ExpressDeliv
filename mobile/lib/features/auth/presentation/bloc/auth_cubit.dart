@@ -51,4 +51,14 @@ class AuthCubit extends Cubit<AuthState> {
       emit(AuthError(e.toString()));
     }
   }
+
+  Future<void> register(String nom, String prenom, String email, String telephone, String password, String role) async {
+    emit(AuthLoading());
+    try {
+      await _repository.register(nom, prenom, email, telephone, password, role);
+      emit(AuthInitial()); // On reste sur la page login
+    } catch (e) {
+      emit(AuthError(e.toString()));
+    }
+  }
 }

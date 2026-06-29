@@ -6,12 +6,14 @@ import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/widgets/custom_snackbar.dart';
 import '../bloc/admin_cubit.dart';
 import '../../../auth/data/models/auth_request.dart';
+import '../../../../core/widgets/custom_text_field.dart';
 
 class GestionUtilisateursPage extends StatefulWidget {
   const GestionUtilisateursPage({super.key});
 
   @override
-  State<GestionUtilisateursPage> createState() => _GestionUtilisateursPageState();
+  State<GestionUtilisateursPage> createState() =>
+      _GestionUtilisateursPageState();
 }
 
 class _GestionUtilisateursPageState extends State<GestionUtilisateursPage> {
@@ -30,6 +32,126 @@ class _GestionUtilisateursPageState extends State<GestionUtilisateursPage> {
     super.dispose();
   }
 
+  void _showCreateUserDialog(BuildContext context) {
+    final _formKey = GlobalKey<FormState>();
+    final nomCtrl = TextEditingController();
+    final prenomCtrl = TextEditingController();
+    final emailCtrl = TextEditingController();
+    final telCtrl = TextEditingController();
+    final passCtrl = TextEditingController();
+    String selectedRole = 'LIVREUR';
+
+    showDialog(
+      context: context,
+      builder: (dialogContext) {
+        // État local pour l'affichage du mot de passe
+        bool obscurePassword = true;
+
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: const Text('Créer un utilisateur'),
+              content: SizedBox(
+                width: double.maxFinite,
+                child: Form(
+                  key: _formKey,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        CustomTextField(
+                          label: 'Nom',
+                          controller: nomCtrl,
+                          validator: (v) => v == null || v.isEmpty ? 'Requis' : null,
+                        ),
+                        const SizedBox(height: 8),
+                        CustomTextField(
+                          label: 'Prénom',
+                          controller: prenomCtrl,
+                          validator: (v) => v == null || v.isEmpty ? 'Requis' : null,
+                        ),
+                        const SizedBox(height: 8),
+                        CustomTextField(
+                          label: 'Email',
+                          controller: emailCtrl,
+                          validator: (v) => v == null || v.isEmpty ? 'Requis' : null,
+                        ),
+                        const SizedBox(height: 8),
+                        CustomTextField(
+                          label: 'Téléphone',
+                          controller: telCtrl,
+                          validator: (v) => v == null || v.isEmpty ? 'Requis' : null,
+                        ),
+                        const SizedBox(height: 8),
+                        CustomTextField(
+                          label: 'Mot de passe',
+                          controller: passCtrl,
+                          obscureText: obscurePassword, // ✅ lié à l'état local
+                          validator: (v) =>
+                              (v == null || v.length < 8) ? 'Min 8 caractères' : null,
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              obscurePassword ? LucideIcons.eye : LucideIcons.eyeOff,
+                              size: 20,
+                              color: AppColors.textSecondary,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                obscurePassword = !obscurePassword;
+                              });
+                            },
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        DropdownButtonFormField<String>(
+                          value: selectedRole,
+                          items: const [
+                            DropdownMenuItem(value: 'LIVREUR', child: Text('Livreur')),
+                            DropdownMenuItem(value: 'ADMIN', child: Text('Admin')),
+                            DropdownMenuItem(value: 'CLIENT', child: Text('Client')),
+                          ],
+                          onChanged: (v) => setState(() => selectedRole = v!),
+                          decoration: const InputDecoration(labelText: 'Rôle'),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(dialogContext),
+                  child: const Text('Annuler'),
+                ),
+                TextButton(
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      Navigator.pop(dialogContext);
+                      try {
+                        await _cubit.createUserByAdmin(
+                          nomCtrl.text,
+                          prenomCtrl.text,
+                          emailCtrl.text,
+                          telCtrl.text,
+                          passCtrl.text,
+                          selectedRole,
+                        );
+                        CustomSnackBar.showSuccess(context, 'Utilisateur créé avec succès');
+                        _cubit.chargerUsers(); // Recharger la liste
+                      } catch (e) {
+                        CustomSnackBar.showError(context, e.toString());
+                      }
+                    }
+                  },
+                  child: const Text('Créer'),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
@@ -45,12 +167,16 @@ class _GestionUtilisateursPageState extends State<GestionUtilisateursPage> {
                 const SizedBox(height: AppSpacing.xs),
                 Text(
                   'Gestion des utilisateurs',
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+                  style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.textPrimary),
                 ),
                 const SizedBox(height: AppSpacing.xs),
                 Text(
                   'Activez ou désactivez les comptes',
-                  style: TextStyle(fontSize: 14, color: AppColors.textSecondary),
+                  style:
+                      TextStyle(fontSize: 14, color: AppColors.textSecondary),
                 ),
                 const SizedBox(height: AppSpacing.md),
                 Expanded(
@@ -62,7 +188,9 @@ class _GestionUtilisateursPageState extends State<GestionUtilisateursPage> {
                     },
                     builder: (context, state) {
                       if (state is AdminLoading) {
-                        return const Center(child: CircularProgressIndicator(color: AppColors.primary));
+                        return const Center(
+                            child: CircularProgressIndicator(
+                                color: AppColors.primary));
                       } else if (state is AdminUsersSuccess) {
                         final users = state.users;
                         if (users.isEmpty) {
@@ -85,6 +213,11 @@ class _GestionUtilisateursPageState extends State<GestionUtilisateursPage> {
               ],
             ),
           ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: AppColors.tertiary,
+          onPressed: () => _showCreateUserDialog(context),
+          child: const Icon(LucideIcons.plus),
         ),
       ),
     );
@@ -110,7 +243,9 @@ class _GestionUtilisateursPageState extends State<GestionUtilisateursPage> {
             width: 44,
             height: 44,
             decoration: BoxDecoration(
-              color: isActive ? AppColors.success.withValues(alpha: 0.1) : AppColors.error.withValues(alpha: 0.1),
+              color: isActive
+                  ? AppColors.success.withValues(alpha: 0.1)
+                  : AppColors.error.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Icon(
@@ -126,34 +261,55 @@ class _GestionUtilisateursPageState extends State<GestionUtilisateursPage> {
               children: [
                 Text(
                   fullName.isNotEmpty ? fullName : 'Utilisateur',
-                  style: TextStyle(fontWeight: FontWeight.w600, color: AppColors.textPrimary),
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.textPrimary),
                 ),
-                Text(email, style: TextStyle(fontSize: 12, color: AppColors.textSecondary)),
+                Text(email,
+                    style: TextStyle(
+                        fontSize: 12, color: AppColors.textSecondary)),
                 Row(
                   children: [
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 2),
                       decoration: BoxDecoration(
                         color: AppColors.primary.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text(
                         role,
-                        style: TextStyle(fontSize: 10, color: AppColors.primary, fontWeight: FontWeight.w500),
+                        style: TextStyle(
+                            fontSize: 10,
+                            color: AppColors.primary,
+                            fontWeight: FontWeight.w500),
                       ),
                     ),
                     const SizedBox(width: 8),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 2),
                       decoration: BoxDecoration(
-                        color: isActive ? AppColors.success.withValues(alpha: 0.1) : AppColors.error.withValues(alpha: 0.1),
+                        color: isActive
+                            ? AppColors.success.withValues(alpha: 0.1)
+                            : user.statut == 'SUSPENDU'
+                                ? AppColors.warning.withValues(alpha: 0.1)
+                                : AppColors.error.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text(
-                        isActive ? 'ACTIF' : 'INACTIF',
+                        isActive
+                            ? 'ACTIF'
+                            : user.statut == 'SUSPENDU'
+                                ? 'SUSPENDU'
+                                : 'INACTIF',
                         style: TextStyle(
                           fontSize: 10,
-                          color: isActive ? AppColors.success : AppColors.error,
+                          color: isActive
+                              ? AppColors.success
+                              : user.statut == 'SUSPENDU'
+                                  ? AppColors.warning
+                                  : AppColors.error,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -163,8 +319,7 @@ class _GestionUtilisateursPageState extends State<GestionUtilisateursPage> {
               ],
             ),
           ),
-          if (role != 'SUPER_ADMIN')
-            _ToggleButton(user: user, cubit: _cubit),
+          if (role != 'SUPER_ADMIN') _ToggleButton(user: user, cubit: _cubit),
         ],
       ),
     );
@@ -179,7 +334,10 @@ class _GestionUtilisateursPageState extends State<GestionUtilisateursPage> {
           const SizedBox(height: AppSpacing.md),
           Text(
             'Aucun utilisateur',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: AppColors.textPrimary),
+            style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: AppColors.textPrimary),
           ),
           const SizedBox(height: AppSpacing.xs),
           Text(
@@ -198,7 +356,8 @@ class _GestionUtilisateursPageState extends State<GestionUtilisateursPage> {
         children: [
           Icon(LucideIcons.alertCircle, size: 48, color: AppColors.error),
           const SizedBox(height: AppSpacing.md),
-          Text('Erreur de chargement', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+          Text('Erreur de chargement',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
           Text(message, style: TextStyle(color: AppColors.textSecondary)),
           const SizedBox(height: AppSpacing.lg),
           ElevatedButton(
@@ -206,7 +365,8 @@ class _GestionUtilisateursPageState extends State<GestionUtilisateursPage> {
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.primary,
               foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12)),
             ),
             child: const Text('Réessayer'),
           ),
@@ -239,12 +399,15 @@ class _ToggleButtonState extends State<_ToggleButton> {
           : () async {
               setState(() => _isLoading = true);
               try {
-                await widget.cubit.toggleUserStatus(widget.user.id, widget.user.statut ?? 'ACTIF');
+                await widget.cubit.toggleUserStatus(
+                    widget.user.id, widget.user.statut ?? 'ACTIF');
                 // Le Cubit recharge la liste, donc ce widget sera recréé avec _isLoading = false
               } catch (e) {
                 setState(() => _isLoading = false);
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Erreur: ${e.toString()}'), backgroundColor: Colors.red),
+                  SnackBar(
+                      content: Text('Erreur: ${e.toString()}'),
+                      backgroundColor: Colors.red),
                 );
               }
             },

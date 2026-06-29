@@ -5,4 +5,5 @@ abstract class AuthRepository {
   Future<void> logout();
   Future<UserDto> updateProfile(Map<String, dynamic> data);
   Future<void> registerFcmToken(String token); 
+  Future<void> register(String nom, String prenom, String email, String telephone, String password, String role);
 }

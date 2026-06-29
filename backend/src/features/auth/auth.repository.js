@@ -35,12 +35,13 @@ export const findUserById = async (id) => {
 };
 
 // Création d'un utilisateur (transaction ACID) — avec paramètre 'role'
+// Création d'un utilisateur (transaction ACID)
 export const createUser = async ({ nom, prenom, email, telephone, passwordHash, adresseDefaut, role = 'CLIENT' }) => {
   const client = await getClient();
   try {
     await client.query('BEGIN');
 
-    // Récupère l'id du rôle passé en paramètre (au lieu de forcer 'CLIENT')
+    // Récupère l'id du rôle passé en paramètre (au lieu de forcer CLIENT)
     const roleResult = await client.query(
       `SELECT id FROM roles WHERE nom = $1`,
       [role]
@@ -64,7 +65,7 @@ export const createUser = async ({ nom, prenom, email, telephone, passwordHash, 
 
     await client.query('COMMIT');
 
-    // Retourne avec le nom du rôle (le même que celui utilisé)
+    // Retourne avec le nom du rôle (le même que passé)
     return { ...user, role_nom: role };
 
   } catch (err) {

@@ -39,8 +39,19 @@ export const updateMyProfile = async (req, res, next) => {
 };
 
 // ══════════════════════════════════════════════════════════
-// GET /users — Liste paginée (ADMIN+)
+// POST /users — Création d'un utilisateur (ADMIN+)
 // ══════════════════════════════════════════════════════════
+export const createUser = async (req, res, next) => {
+  try {
+    const user = await UsersService.createUser(req.body, req.user.id, getMeta(req));
+    res.status(201).json({
+      success: true,
+      message: 'Utilisateur créé avec succès',
+      data:    toUserDTO(user),
+    });
+  } catch (err) { next(err); }
+};
+
 export const listUsers = async (req, res, next) => {
   try {
     const { page, limit, role, statut, search } = req.validatedQuery;

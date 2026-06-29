@@ -33,6 +33,45 @@ export const updateProfileSchema = Joi.object({
 }).min(1)  // Au moins un champ requis
   .messages({ 'object.min': 'Au moins un champ doit être fourni' });
 
+export const createUserSchema = Joi.object({
+  nom:       Joi.string().min(2).max(100)
+               .pattern(/^[a-zA-ZÀ-ÿ\s\-']+$/)
+               .required()
+               .messages({
+                 'string.pattern.base': 'Le nom ne doit contenir que des lettres',
+                 'any.required':        'Le nom est requis',
+               }),
+  prenom:    Joi.string().min(2).max(100)
+               .pattern(/^[a-zA-ZÀ-ÿ\s\-']+$/)
+               .required()
+               .messages({
+                 'string.pattern.base': 'Le prénom ne doit contenir que des lettres',
+                 'any.required':        'Le prénom est requis',
+               }),
+  email:     Joi.string().email().lowercase().max(255)
+               .required()
+               .messages({
+                 'string.email': 'Format email invalide',
+                 'any.required': "L'email est requis",
+               }),
+  telephone: Joi.string().pattern(/^[0-9+\s\-]{8,20}$/)
+               .required()
+               .messages({
+                 'string.pattern.base': 'Numéro de téléphone invalide (minimum 8 chiffres)',
+                 'any.required':        'Le téléphone est requis',
+               }),
+  password:  Joi.string().min(8).max(128)
+               .pattern(/^(?=.*[0-9])/) 
+               .required()
+               .messages({
+                 'string.pattern.base': 'Le mot de passe doit contenir au moins 1 chiffre',
+                 'string.min':          'Le mot de passe doit contenir au moins 8 caractères',
+                 'any.required':        'Le mot de passe est requis',
+               }),
+  role:      Joi.string().valid('CLIENT', 'LIVREUR', 'ADMIN').required(),
+  adresse_defaut: Joi.string().max(500).optional(),
+});
+
 // ── Schéma : changement de statut (PATCH /users/:id/statut) ─
 // Réservé ADMIN+
 export const updateStatutSchema = Joi.object({

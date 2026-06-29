@@ -156,4 +156,13 @@ class AdminCubit extends Cubit<AdminState> {
     }
   }
 
+  Future<void> createUserByAdmin(String nom, String prenom, String email, String telephone, String password, String role) async {
+    try {
+      await _repository.createUserByAdmin(nom, prenom, email, telephone, password, role);
+      // Recharger la liste des utilisateurs après création
+      await chargerUsers();
+    } catch (e) {
+      emit(AdminError(e.toString()));
+    }
+  }
 }

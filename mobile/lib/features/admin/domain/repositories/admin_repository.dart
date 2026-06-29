@@ -11,4 +11,5 @@ abstract class AdminRepository {
   Future<List<Commande>> getPendingOrders(); // Commandes en attente
   Future<List<UserDto>> getLivreurs();       // Livreurs actifs
   Future<void> assignerLivraison(String commandeId, String livreurId);
+  Future<void> createUserByAdmin(String nom, String prenom, String email, String telephone, String password, String role);
 }

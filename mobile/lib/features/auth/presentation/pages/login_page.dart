@@ -8,7 +8,7 @@ import '../../../../core/widgets/custom_text_field.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/custom_snackbar.dart';
 import '../../../../core/router/app_router.dart';
-
+import 'register_page.dart';
 import '../bloc/auth_cubit.dart';
 
 class LoginPage extends StatefulWidget {
@@ -144,7 +144,10 @@ class _LoginPageState extends State<LoginPage> {
                     Center(
                       child: TextButton(
                         onPressed: () {
-                          // Navigation vers Register (à implémenter)
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (_) => const RegisterPage()),
+                          );
                         },
                         style: TextButton.styleFrom(
                           foregroundColor: AppColors.textSecondary,

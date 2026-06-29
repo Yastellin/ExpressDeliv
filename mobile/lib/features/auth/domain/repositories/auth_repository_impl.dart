@@ -102,4 +102,21 @@ Future<void> registerFcmToken(String token) async {
     print('Erreur enregistrement token FCM : $e');
   }
 }
+
+@override
+Future<void> register(String nom, String prenom, String email, String telephone, String password, String role) async {
+  try {
+    await _dio.post('/auth/register', data: {
+      'nom': nom,
+      'prenom': prenom,
+      'email': email,
+      'telephone': telephone,
+      'password': password,
+      'role': role,
+    });
+  } on DioException catch (e) {
+    final errorMsg = e.response?.data?['error']?['message'] ?? e.message;
+    throw Exception('Erreur : $errorMsg');
+  }
+}
 }

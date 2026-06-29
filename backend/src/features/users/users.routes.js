@@ -7,10 +7,12 @@ import { validate,
           updateProfileSchema,
           updateStatutSchema,
           updateRoleSchema,
+          createUserSchema,
           listUsersSchema }          from './users.validator.js';
 import {
   getMyProfile,
   updateMyProfile,
+  createUser,
   listUsers,
   getUserById,
   updateStatut,
@@ -58,9 +60,17 @@ router.put(
   updateMyProfile
 );
 
-// ════════════════════════════════════════════════════════
+router.post(
+  '/',
+  authenticate,
+  isAdmin,
+  validate(createUserSchema),
+  createUser
+);
+
+// ══════════════════════════════════════════════════════════
 // ROUTES ADMIN+ — Gestion des utilisateurs
-// ════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════
 
 router.get(
   '/',

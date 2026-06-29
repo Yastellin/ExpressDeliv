@@ -48,12 +48,12 @@ class UserDto with _$UserDto {
     required String id,
     required String nom,
     required String prenom,
-    @Default('') String email,        // ✅ Valeur par défaut
-    @Default('') String role,         // ✅ Valeur par défaut
-    @Default('') String telephone,    // ✅ Valeur par défaut
-    @Default('') String adresse_defaut,
+    required String email,
+    required String role,
+    String? telephone,          //  optionnel
+    String? adresse_defaut,     //  optionnel
     String? zone_geographique,
-    @Default('ACTIF') String statut,  // ✅ Valeur par défaut
+    String? statut,
     String? created_at,
   }) = _UserDto;
 

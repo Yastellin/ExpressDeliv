@@ -10,5 +10,7 @@ class AppColors {
   static const Color textSecondary = Color(0xFF6B7280);
   static const Color error = Color(0xFFEF4444);
   static const Color success = Color(0xFF10B981);
-  static const Color inputBackground = Color(0xFFF3F4F6);
+  static const Color inputBackground = Color(0xFFF3F4F6);    // Vert menthe
+  static const Color tertiary = Color(0xFFFFA53E);   // Orange
+  static const Color warning = Color(0xFFFFA53E);    // Alias pour les statuts
 }

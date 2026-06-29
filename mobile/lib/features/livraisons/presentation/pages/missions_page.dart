@@ -307,8 +307,9 @@ class _MissionsPageState extends State<MissionsPage> {
               Padding(
                 padding: const EdgeInsets.only(top: AppSpacing.sm),
                 child: PrimaryButton(
-                  label: '💬 Chat avec le client',
+                  label: 'Chat avec le client',
                   onPressed: () {
+                    print('[MissionsPage] ouverture chat pour livraison ${mission.id}');
                     Navigator.push(
                       context,
                       MaterialPageRoute(

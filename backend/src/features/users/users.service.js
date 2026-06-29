@@ -1,4 +1,6 @@
 import * as UsersRepository from './users.repository.js';
+import { findUserByEmail, createUser as createUserRepository } from '../auth/auth.repository.js';
+import bcrypt from 'bcryptjs';
 import { AppError, ErrorCodes }        from '../../middlewares/errorHandler.js';
 import { createAuditLog, AuditActions } from '../../middlewares/auditLogger.js';
 import { createLogger }                 from '../../config/winston.js';
@@ -20,9 +22,46 @@ export const getProfile = async (id) => {
   return user;
 };
 
+export const createUser = async (userData, adminId, meta = {}) => {
+  const { nom, prenom, email, telephone, password, role, adresse_defaut } = userData;
+
+  const existing = await findUserByEmail(email);
+  if (existing) {
+    throw new AppError(
+      'Un compte avec cet email existe déjà',
+      409,
+      ErrorCodes.ALREADY_EXISTS
+    );
+  }
+
+  const passwordHash = await bcrypt.hash(password, 12);
+  const user = await createUserRepository({
+    nom,
+    prenom,
+    email,
+    telephone,
+    passwordHash,
+    adresseDefaut: adresse_defaut,
+    role,
+  });
+
+  await createAuditLog({
+    utilisateurId:  adminId,
+    action:         AuditActions.USER_CREATED,
+    tableCible:     'utilisateurs',
+    entiteId:       user.id,
+    nouvelleValeur: { email, nom, prenom, role },
+    adresseIp:      meta.ip,
+    userAgent:      meta.userAgent,
+  });
+
+  logger.info('Utilisateur créé par un admin', { userId: user.id, role, adminId });
+  return user;
+};
+
 // ══════════════════════════════════════════════════════════
 // updateProfile() — Mise à jour du profil utilisateur
-// ══════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════
 export const updateProfile = async (id, fields, meta = {}) => {
   // Vérifier que l'utilisateur existe
   const existing = await UsersRepository.findById(id);

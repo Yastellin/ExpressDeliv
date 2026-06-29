@@ -55,12 +55,12 @@ _$UserDtoImpl _$$UserDtoImplFromJson(Map<String, dynamic> json) =>
       id: json['id'] as String,
       nom: json['nom'] as String,
       prenom: json['prenom'] as String,
-      email: json['email'] as String? ?? '',
-      role: json['role'] as String? ?? '',
-      telephone: json['telephone'] as String? ?? '',
-      adresse_defaut: json['adresse_defaut'] as String? ?? '',
+      email: json['email'] as String,
+      role: json['role'] as String,
+      telephone: json['telephone'] as String?,
+      adresse_defaut: json['adresse_defaut'] as String?,
       zone_geographique: json['zone_geographique'] as String?,
-      statut: json['statut'] as String? ?? 'ACTIF',
+      statut: json['statut'] as String?,
       created_at: json['created_at'] as String?,
     );
 

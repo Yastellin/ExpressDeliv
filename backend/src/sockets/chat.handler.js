@@ -104,7 +104,6 @@ export const registerChatHandlers = (io, socket) => {
   });
 
   // ── chat:message — envoyer un message ─────────────────
-  // Payload : { livraison_id: string, contenu: string }
   socket.on('chat:message', async ({ livraison_id, contenu }) => {
     try {
       // Validations
@@ -134,16 +133,25 @@ export const registerChatHandlers = (io, socket) => {
         contenu.trim()
       );
 
-      // Payload diffusé à toute la room
+      // ✅ Récupérer le nom et prénom de l'expéditeur
+      const userResult = await query(
+        `SELECT nom, prenom FROM utilisateurs WHERE id = $1`,
+        [socket.data.userId]
+      );
+      const expediteur = userResult.rows[0] || { nom: '', prenom: '' };
+
+      // Payload complet (incluant nom et prénom)
       const payload = {
         id:              saved.id,
         livraison_id,
         contenu:         contenu.trim(),
         expediteur_id:   socket.data.userId,
+        expediteur_nom:  expediteur.nom,
+        expediteur_prenom: expediteur.prenom,
         envoye_at:       saved.envoye_at,
       };
 
-      // Diffusion à toute la room (émetteur inclus pour confirmation)
+      // Diffusion à toute la room (émetteur inclus)
       const room = `livraison_${livraison_id}`;
       io.to(room).emit('chat:message', payload);
 

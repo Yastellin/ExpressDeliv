@@ -556,14 +556,13 @@ mixin _$UserDto {
   String get id => throw _privateConstructorUsedError;
   String get nom => throw _privateConstructorUsedError;
   String get prenom => throw _privateConstructorUsedError;
-  String get email => throw _privateConstructorUsedError; // ✅ Valeur par défaut
-  String get role => throw _privateConstructorUsedError; // ✅ Valeur par défaut
-  String get telephone =>
-      throw _privateConstructorUsedError; // ✅ Valeur par défaut
-  String get adresse_defaut => throw _privateConstructorUsedError;
+  String get email => throw _privateConstructorUsedError;
+  String get role => throw _privateConstructorUsedError;
+  String? get telephone => throw _privateConstructorUsedError; //  optionnel
+  String? get adresse_defaut =>
+      throw _privateConstructorUsedError; //  optionnel
   String? get zone_geographique => throw _privateConstructorUsedError;
-  String get statut =>
-      throw _privateConstructorUsedError; // ✅ Valeur par défaut
+  String? get statut => throw _privateConstructorUsedError;
   String? get created_at => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -582,10 +581,10 @@ abstract class $UserDtoCopyWith<$Res> {
       String prenom,
       String email,
       String role,
-      String telephone,
-      String adresse_defaut,
+      String? telephone,
+      String? adresse_defaut,
       String? zone_geographique,
-      String statut,
+      String? statut,
       String? created_at});
 }
 
@@ -607,10 +606,10 @@ class _$UserDtoCopyWithImpl<$Res, $Val extends UserDto>
     Object? prenom = null,
     Object? email = null,
     Object? role = null,
-    Object? telephone = null,
-    Object? adresse_defaut = null,
+    Object? telephone = freezed,
+    Object? adresse_defaut = freezed,
     Object? zone_geographique = freezed,
-    Object? statut = null,
+    Object? statut = freezed,
     Object? created_at = freezed,
   }) {
     return _then(_value.copyWith(
@@ -634,22 +633,22 @@ class _$UserDtoCopyWithImpl<$Res, $Val extends UserDto>
           ? _value.role
           : role // ignore: cast_nullable_to_non_nullable
               as String,
-      telephone: null == telephone
+      telephone: freezed == telephone
           ? _value.telephone
           : telephone // ignore: cast_nullable_to_non_nullable
-              as String,
-      adresse_defaut: null == adresse_defaut
+              as String?,
+      adresse_defaut: freezed == adresse_defaut
           ? _value.adresse_defaut
           : adresse_defaut // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       zone_geographique: freezed == zone_geographique
           ? _value.zone_geographique
           : zone_geographique // ignore: cast_nullable_to_non_nullable
               as String?,
-      statut: null == statut
+      statut: freezed == statut
           ? _value.statut
           : statut // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       created_at: freezed == created_at
           ? _value.created_at
           : created_at // ignore: cast_nullable_to_non_nullable
@@ -671,10 +670,10 @@ abstract class _$$UserDtoImplCopyWith<$Res> implements $UserDtoCopyWith<$Res> {
       String prenom,
       String email,
       String role,
-      String telephone,
-      String adresse_defaut,
+      String? telephone,
+      String? adresse_defaut,
       String? zone_geographique,
-      String statut,
+      String? statut,
       String? created_at});
 }
 
@@ -694,10 +693,10 @@ class __$$UserDtoImplCopyWithImpl<$Res>
     Object? prenom = null,
     Object? email = null,
     Object? role = null,
-    Object? telephone = null,
-    Object? adresse_defaut = null,
+    Object? telephone = freezed,
+    Object? adresse_defaut = freezed,
     Object? zone_geographique = freezed,
-    Object? statut = null,
+    Object? statut = freezed,
     Object? created_at = freezed,
   }) {
     return _then(_$UserDtoImpl(
@@ -721,22 +720,22 @@ class __$$UserDtoImplCopyWithImpl<$Res>
           ? _value.role
           : role // ignore: cast_nullable_to_non_nullable
               as String,
-      telephone: null == telephone
+      telephone: freezed == telephone
           ? _value.telephone
           : telephone // ignore: cast_nullable_to_non_nullable
-              as String,
-      adresse_defaut: null == adresse_defaut
+              as String?,
+      adresse_defaut: freezed == adresse_defaut
           ? _value.adresse_defaut
           : adresse_defaut // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       zone_geographique: freezed == zone_geographique
           ? _value.zone_geographique
           : zone_geographique // ignore: cast_nullable_to_non_nullable
               as String?,
-      statut: null == statut
+      statut: freezed == statut
           ? _value.statut
           : statut // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       created_at: freezed == created_at
           ? _value.created_at
           : created_at // ignore: cast_nullable_to_non_nullable
@@ -752,12 +751,12 @@ class _$UserDtoImpl implements _UserDto {
       {required this.id,
       required this.nom,
       required this.prenom,
-      this.email = '',
-      this.role = '',
-      this.telephone = '',
-      this.adresse_defaut = '',
+      required this.email,
+      required this.role,
+      this.telephone,
+      this.adresse_defaut,
       this.zone_geographique,
-      this.statut = 'ACTIF',
+      this.statut,
       this.created_at});
 
   factory _$UserDtoImpl.fromJson(Map<String, dynamic> json) =>
@@ -770,26 +769,19 @@ class _$UserDtoImpl implements _UserDto {
   @override
   final String prenom;
   @override
-  @JsonKey()
   final String email;
-// ✅ Valeur par défaut
   @override
-  @JsonKey()
   final String role;
-// ✅ Valeur par défaut
   @override
-  @JsonKey()
-  final String telephone;
-// ✅ Valeur par défaut
+  final String? telephone;
+//  optionnel
   @override
-  @JsonKey()
-  final String adresse_defaut;
+  final String? adresse_defaut;
+//  optionnel
   @override
   final String? zone_geographique;
   @override
-  @JsonKey()
-  final String statut;
-// ✅ Valeur par défaut
+  final String? statut;
   @override
   final String? created_at;
 
@@ -843,12 +835,12 @@ abstract class _UserDto implements UserDto {
       {required final String id,
       required final String nom,
       required final String prenom,
-      final String email,
-      final String role,
-      final String telephone,
-      final String adresse_defaut,
+      required final String email,
+      required final String role,
+      final String? telephone,
+      final String? adresse_defaut,
       final String? zone_geographique,
-      final String statut,
+      final String? statut,
       final String? created_at}) = _$UserDtoImpl;
 
   factory _UserDto.fromJson(Map<String, dynamic> json) = _$UserDtoImpl.fromJson;
@@ -861,17 +853,17 @@ abstract class _UserDto implements UserDto {
   String get prenom;
   @override
   String get email;
-  @override // ✅ Valeur par défaut
-  String get role;
-  @override // ✅ Valeur par défaut
-  String get telephone;
-  @override // ✅ Valeur par défaut
-  String get adresse_defaut;
   @override
+  String get role;
+  @override
+  String? get telephone;
+  @override //  optionnel
+  String? get adresse_defaut;
+  @override //  optionnel
   String? get zone_geographique;
   @override
-  String get statut;
-  @override // ✅ Valeur par défaut
+  String? get statut;
+  @override
   String? get created_at;
   @override
   @JsonKey(ignore: true)
