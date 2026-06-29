@@ -50,11 +50,13 @@ class _SuiviCartePageState extends State<SuiviCartePage> {
 
     // Écouter les mises à jour GPS
     SocketService.listenToGpsUpdates((data) {
-      if (data['livraisonId'] == widget.livraisonId) {
+      if (data['livraison_id'] == widget.livraisonId) {
         setState(() {
+          final lat = data['lat'];
+          final lng = data['lng'];
           _livreurPosition = LatLng(
-            data['lat'] as double,
-            data['lng'] as double,
+            lat is double ? lat : (lat is int ? lat.toDouble() : double.parse(lat.toString())),
+            lng is double ? lng : (lng is int ? lng.toDouble() : double.parse(lng.toString())),
           );
         });
       }
@@ -80,8 +82,10 @@ class _SuiviCartePageState extends State<SuiviCartePage> {
     // Calculer la progression vers la destination
     final progress = step / maxSteps;
     if (_destinationPosition != null) {
-      final lat = widget.initialLat! + (_destinationPosition!.latitude - widget.initialLat!) * progress;
-      final lng = widget.initialLng! + (_destinationPosition!.longitude - widget.initialLng!) * progress;
+      final baseLat = widget.initialLat ?? _livreurPosition.latitude;
+      final baseLng = widget.initialLng ?? _livreurPosition.longitude;
+      final lat = baseLat + (_destinationPosition!.latitude - baseLat) * progress;
+      final lng = baseLng + (_destinationPosition!.longitude - baseLng) * progress;
 
       setState(() {
         _livreurPosition = LatLng(lat, lng);

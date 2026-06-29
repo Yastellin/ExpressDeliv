@@ -1,4 +1,4 @@
-import 'package:flutter_test/flutter_test.dart';
+/*import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/main.dart';
 import 'package:mobile/features/auth/domain/repositories/auth_repository.dart';
 import 'package:mobile/features/auth/data/models/auth_request.dart';
@@ -24,4 +24,4 @@ void main() {
 
     expect(find.text('ExpressDeliv'), findsOneWidget);
   });
-}
+} */

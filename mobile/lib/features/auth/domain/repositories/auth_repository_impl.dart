@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart' show defaultTargetPlatform, TargetPlatform;
 import '../../../../core/network/dio_client.dart';
 import '../../../../core/services/storage_service.dart';
 import '../../domain/repositories/auth_repository.dart';
@@ -96,8 +97,10 @@ Future<UserDto> updateProfile(Map<String, dynamic> data) async {
 @override
 Future<void> registerFcmToken(String token) async {
   try {
-    await _dio.post('/notifications/token', data: {'token': token});
-    print('Token FCM enregistré');
+    await _dio.post('/notifications/token', data: {
+      'token_fcm': token,
+      'plateforme': defaultTargetPlatform == TargetPlatform.android ? 'ANDROID' : 'IOS',
+    });
   } catch (e) {
     print('Erreur enregistrement token FCM : $e');
   }

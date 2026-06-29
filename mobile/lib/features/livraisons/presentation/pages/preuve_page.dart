@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:typed_data';
-import 'dart:html' as html; // Pour le web : créer un objet URL
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -41,22 +40,22 @@ class _PreuvePageState extends State<PreuvePage> {
   }
 
   // Sélection de l'image (caméra ou galerie)
-  Future<void> _pickImage(ImageSource source) async {
-    print('📸 [PreuvePage] Sélection d\'image depuis $source');
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: source);
-    if (pickedFile != null) {
-      print('📸 [PreuvePage] Fichier sélectionné : ${pickedFile.path}');
-      final bytes = await pickedFile.readAsBytes();
-      setState(() {
-        _imageBytes = bytes;
-        _imageName = pickedFile.name;
-      });
-      print('✅ [PreuvePage] Image chargée (${bytes.length} bytes)');
-    } else {
-      print('ℹ️ [PreuvePage] Aucune image sélectionnée');
-    }
+Future<void> _pickImage(ImageSource source) async {
+  print('[PreuvePage] Sélection d\'image depuis $source');
+  final picker = ImagePicker();
+  final pickedFile = await picker.pickImage(source: source);
+  if (pickedFile != null) {
+    print('[PreuvePage] Fichier sélectionné : ${pickedFile.path}');
+    final bytes = await pickedFile.readAsBytes();
+    setState(() {
+      _imageBytes = bytes;
+      _imageName = pickedFile.name;
+    });
+    print(' [PreuvePage] Image chargée (${bytes.length} bytes)');
+  } else {
+    print('[PreuvePage] Aucune image sélectionnée');
   }
+}
 
   Future<void> _submit() async {
     print('📤 [PreuvePage] Tentative de soumission...');

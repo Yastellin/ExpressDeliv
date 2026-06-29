@@ -30,6 +30,9 @@ class SocketService {
     _socket = IO.io(baseUrl, <String, dynamic>{
       'transports': ['websocket'],
       'autoConnect': true,
+      'reconnection': true,
+      'reconnectionAttempts': 5,
+      'reconnectionDelay': 2000,
       'auth': {
         'token': token,
       },
@@ -117,18 +120,18 @@ class SocketService {
   }
 
   // Rejoindre une room (ex: pour le suivi d'une livraison)
-  static void joinRoom(String roomId) {
+  static void joinRoom(String livraisonId) {
     if (_socket != null && _socket!.connected) {
-      _currentRoom = roomId;
-      _socket!.emit('join_room', roomId);
-      print('Rejoint la room : $roomId');
+      _currentRoom = livraisonId;
+      _socket!.emit('gps:join', { 'livraison_id': livraisonId });
+      print('Rejoint la room GPS pour la livraison : $livraisonId');
     }
   }
 
   // Quitter la room actuelle
   static void leaveRoom() {
     if (_socket != null && _socket!.connected && _currentRoom != null) {
-      _socket!.emit('leave_room', _currentRoom);
+      _socket!.emit('gps:leave', { 'livraison_id': _currentRoom });
       print('Quitté la room : $_currentRoom');
       _currentRoom = null;
     }
@@ -137,7 +140,7 @@ class SocketService {
   // Écouter les mises à jour de position GPS
   static void listenToGpsUpdates(Function(Map<String, dynamic>) onUpdate) {
     if (_socket != null) {
-      _socket!.on('gps_update', (data) {
+      _socket!.on('gps:position', (data) {
         print('Mise à jour GPS reçue : $data');
         onUpdate(data as Map<String, dynamic>);
       });
@@ -147,7 +150,7 @@ class SocketService {
   // Écouter les messages du chat
   static void listenToChatMessages(Function(Map<String, dynamic>) onMessage) {
     if (_socket != null) {
-      _socket!.on('chat_message', (data) {
+      _socket!.on('chat:message', (data) {
         print('💬 Message chat reçu : $data');
         onMessage(data as Map<String, dynamic>);
       });
@@ -157,8 +160,8 @@ class SocketService {
   // Envoyer une position GPS (par le livreur)
   static void sendGpsUpdate(String livraisonId, double lat, double lng) {
     if (_socket != null && _socket!.connected) {
-      _socket!.emit('gps_update', {
-        'livraisonId': livraisonId,
+      _socket!.emit('gps:update', {
+        'livraison_id': livraisonId,
         'lat': lat,
         'lng': lng,
       });

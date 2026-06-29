@@ -1,0 +1,87 @@
+{"level":"info","message":"Socket.io initialisé","service":"socket","timestamp":"2026-06-29T21:07:04.858Z"}
+{"level":"info","message":"Nouvelle connexion PostgreSQL établie","service":"database","timestamp":"2026-06-29T21:07:04.990Z"}
+{"level":"info","message":"PostgreSQL connecté — serveur: Tue Jun 30 2026 00:07:04 GMT+0300 (heure normale de Moscou)","service":"database","timestamp":"2026-06-29T21:07:05.077Z"}
+{"error":"Cannot read properties of undefined (reading 'cert')","level":"error","message":"Erreur initialisation Firebase","service":"firebase","timestamp":"2026-06-29T21:07:05.081Z"}
+{"level":"info","message":"✓ Serveur démarré sur http://localhost:3000","service":"server","timestamp":"2026-06-29T21:07:05.090Z"}
+{"level":"info","message":"✓ Swagger disponible sur http://localhost:3000/api/docs","service":"server","timestamp":"2026-06-29T21:07:05.092Z"}
+{"level":"info","message":"✓ Environnement : development","service":"server","timestamp":"2026-06-29T21:07:05.099Z"}
+{"level":"info","message":"Socket.io initialisé","service":"socket","timestamp":"2026-06-29T21:12:04.182Z"}
+{"level":"info","message":"Nouvelle connexion PostgreSQL établie","service":"database","timestamp":"2026-06-29T21:12:04.256Z"}
+{"level":"info","message":"PostgreSQL connecté — serveur: Tue Jun 30 2026 00:12:04 GMT+0300 (heure normale de Moscou)","service":"database","timestamp":"2026-06-29T21:12:04.261Z"}
+{"error":"Cannot read properties of undefined (reading 'cert')","level":"error","message":"Erreur initialisation Firebase","service":"firebase","timestamp":"2026-06-29T21:12:04.263Z"}
+{"level":"info","message":"✓ Serveur démarré sur http://localhost:3000","service":"server","timestamp":"2026-06-29T21:12:04.267Z"}
+{"level":"info","message":"✓ Swagger disponible sur http://localhost:3000/api/docs","service":"server","timestamp":"2026-06-29T21:12:04.274Z"}
+{"level":"info","message":"✓ Environnement : development","service":"server","timestamp":"2026-06-29T21:12:04.275Z"}
+{"level":"info","message":"Signal SIGINT reçu — arrêt propre du serveur","service":"server","timestamp":"2026-06-29T21:12:21.454Z"}
+{"level":"info","message":"Socket.io initialisé","service":"socket","timestamp":"2026-06-29T21:12:27.887Z"}
+{"level":"info","message":"Nouvelle connexion PostgreSQL établie","service":"database","timestamp":"2026-06-29T21:12:27.955Z"}
+{"level":"info","message":"PostgreSQL connecté — serveur: Tue Jun 30 2026 00:12:27 GMT+0300 (heure normale de Moscou)","service":"database","timestamp":"2026-06-29T21:12:27.959Z"}
+{"error":"Cannot read properties of undefined (reading 'cert')","level":"error","message":"Erreur initialisation Firebase","service":"firebase","timestamp":"2026-06-29T21:12:27.961Z"}
+{"level":"info","message":"✓ Serveur démarré sur http://localhost:3000","service":"server","timestamp":"2026-06-29T21:12:27.964Z"}
+{"level":"info","message":"✓ Swagger disponible sur http://localhost:3000/api/docs","service":"server","timestamp":"2026-06-29T21:12:27.965Z"}
+{"level":"info","message":"✓ Environnement : development","service":"server","timestamp":"2026-06-29T21:12:27.966Z"}
+{"level":"info","message":"Socket.io initialisé","service":"socket","timestamp":"2026-06-29T21:20:43.186Z"}
+{"level":"info","message":"Nouvelle connexion PostgreSQL établie","service":"database","timestamp":"2026-06-29T21:20:43.250Z"}
+{"level":"info","message":"PostgreSQL connecté — serveur: Tue Jun 30 2026 00:20:43 GMT+0300 (heure normale de Moscou)","service":"database","timestamp":"2026-06-29T21:20:43.255Z"}
+{"level":"info","message":"Firebase initialisé — projet : \"project_id\": \"appmobile-4abc6\",","service":"firebase","timestamp":"2026-06-29T21:20:43.339Z"}
+{"level":"info","message":"✓ Serveur démarré sur http://localhost:3000","service":"server","timestamp":"2026-06-29T21:20:43.342Z"}
+{"level":"info","message":"✓ Swagger disponible sur http://localhost:3000/api/docs","service":"server","timestamp":"2026-06-29T21:20:43.344Z"}
+{"level":"info","message":"✓ Environnement : development","service":"server","timestamp":"2026-06-29T21:20:43.345Z"}
+{"level":"info","message":"Nouvelle connexion PostgreSQL établie","service":"database","timestamp":"2026-06-29T21:47:13.870Z"}
+{"level":"info","message":"Utilisateur connecté","role":"LIVREUR","service":"authService","timestamp":"2026-06-29T21:47:14.823Z","userId":"70f14123-7cb5-4fc3-a063-27a39d783148"}
+{"level":"info","message":"Nouvelle connexion socket","role":"LIVREUR","service":"socket","socketId":"5plfd0Hm-3-uh8tjAAAB","timestamp":"2026-06-29T21:47:16.278Z","userId":"70f14123-7cb5-4fc3-a063-27a39d783148"}
+{"level":"info","message":"Déconnexion socket","reason":"transport close","service":"socket","socketId":"5plfd0Hm-3-uh8tjAAAB","timestamp":"2026-06-29T21:48:25.029Z","userId":"70f14123-7cb5-4fc3-a063-27a39d783148"}
+{"level":"info","message":"Nouvelle connexion PostgreSQL établie","service":"database","timestamp":"2026-06-29T21:48:46.817Z"}
+{"level":"info","message":"Socket.io initialisé","service":"socket","timestamp":"2026-06-29T22:19:21.080Z"}
+{"level":"info","message":"Nouvelle connexion PostgreSQL établie","service":"database","timestamp":"2026-06-29T22:19:21.226Z"}
+{"level":"info","message":"PostgreSQL connecté — serveur: Tue Jun 30 2026 01:19:21 GMT+0300 (heure normale de Moscou)","service":"database","timestamp":"2026-06-29T22:19:21.230Z"}
+{"level":"info","message":"Firebase initialisé — projet : \"project_id\": \"appmobile-4abc6\",","service":"firebase","timestamp":"2026-06-29T22:19:21.320Z"}
+{"level":"info","message":"✓ Serveur démarré sur http://localhost:3000","service":"server","timestamp":"2026-06-29T22:19:21.323Z"}
+{"level":"info","message":"✓ Swagger disponible sur http://localhost:3000/api/docs","service":"server","timestamp":"2026-06-29T22:19:21.325Z"}
+{"level":"info","message":"✓ Environnement : development","service":"server","timestamp":"2026-06-29T22:19:21.326Z"}
+{"level":"info","message":"Nouvelle connexion PostgreSQL établie","service":"database","timestamp":"2026-06-29T23:13:03.312Z"}
+{"level":"info","message":"Utilisateur connecté","role":"LIVREUR","service":"authService","timestamp":"2026-06-29T23:13:03.992Z","userId":"70f14123-7cb5-4fc3-a063-27a39d783148"}
+{"level":"info","message":"Nouvelle connexion socket","role":"LIVREUR","service":"socket","socketId":"DxAhfZzDi54mYOiZAAAB","timestamp":"2026-06-29T23:13:06.411Z","userId":"70f14123-7cb5-4fc3-a063-27a39d783148"}
+{"level":"info","message":"Nouvelle connexion PostgreSQL établie","service":"database","timestamp":"2026-06-29T23:13:06.672Z"}
+{"level":"info","message":"Utilisateur déconnecté","service":"authService","timestamp":"2026-06-29T23:13:37.681Z","userId":"70f14123-7cb5-4fc3-a063-27a39d783148"}
+{"level":"info","message":"Utilisateur connecté","role":"ADMIN","service":"authService","timestamp":"2026-06-29T23:14:01.964Z","userId":"ad7ed2f9-25f9-475c-85f9-968af1470dff"}
+{"code":"FORBIDDEN","level":"warn","message":"Erreur métier Accès refusé : droits insuffisants","method":"GET","service":"errorHandler","timestamp":"2026-06-29T23:14:03.157Z","url":"/api/v1/livraisons/mes-missions"}
+{"level":"info","message":"Nouvelle connexion PostgreSQL établie","service":"database","timestamp":"2026-06-29T23:14:52.929Z"}
+{"level":"info","message":"Nouvelle connexion PostgreSQL établie","service":"database","timestamp":"2026-06-29T23:15:24.037Z"}
+{"level":"info","message":"Utilisateur déconnecté","service":"authService","timestamp":"2026-06-29T23:15:24.050Z","userId":"ad7ed2f9-25f9-475c-85f9-968af1470dff"}
+{"level":"info","message":"Nouvelle connexion PostgreSQL établie","service":"database","timestamp":"2026-06-29T23:15:59.935Z"}
+{"level":"info","message":"Utilisateur connecté","role":"CLIENT","service":"authService","timestamp":"2026-06-29T23:16:00.262Z","userId":"3d3ee2aa-d864-4fe7-9748-e71c7d4a3aa6"}
+{"code":"FORBIDDEN","level":"warn","message":"Erreur métier Accès refusé : droits insuffisants","method":"GET","service":"errorHandler","timestamp":"2026-06-29T23:16:01.096Z","url":"/api/v1/livraisons/mes-missions"}
+{"level":"info","message":"Nouvelle connexion PostgreSQL établie","service":"database","timestamp":"2026-06-29T23:16:01.230Z"}
+{"level":"info","message":"Nouvelle connexion PostgreSQL établie","service":"database","timestamp":"2026-06-29T23:16:01.243Z"}
+{"level":"info","message":"Nouvelle connexion PostgreSQL établie","service":"database","timestamp":"2026-06-29T23:18:00.451Z"}
+{"level":"info","message":"Profil mis à jour","service":"usersService","timestamp":"2026-06-29T23:18:00.506Z","userId":"3d3ee2aa-d864-4fe7-9748-e71c7d4a3aa6"}
+{"level":"info","message":"Utilisateur déconnecté","service":"authService","timestamp":"2026-06-29T23:18:09.993Z","userId":"3d3ee2aa-d864-4fe7-9748-e71c7d4a3aa6"}
+{"level":"info","message":"Utilisateur connecté","role":"LIVREUR","service":"authService","timestamp":"2026-06-29T23:18:39.982Z","userId":"70f14123-7cb5-4fc3-a063-27a39d783148"}
+{"level":"info","message":"Nouvelle connexion PostgreSQL établie","service":"database","timestamp":"2026-06-29T23:18:40.775Z"}
+{"level":"info","message":"Utilisateur déconnecté","service":"authService","timestamp":"2026-06-29T23:19:24.439Z","userId":"70f14123-7cb5-4fc3-a063-27a39d783148"}
+{"level":"info","message":"Nouvelle connexion PostgreSQL établie","service":"database","timestamp":"2026-06-29T23:19:58.768Z"}
+{"level":"info","message":"Utilisateur connecté","role":"CLIENT","service":"authService","timestamp":"2026-06-29T23:19:59.084Z","userId":"3d3ee2aa-d864-4fe7-9748-e71c7d4a3aa6"}
+{"code":"FORBIDDEN","level":"warn","message":"Erreur métier Accès refusé : droits insuffisants","method":"GET","service":"errorHandler","timestamp":"2026-06-29T23:19:59.681Z","url":"/api/v1/livraisons/mes-missions"}
+{"level":"info","message":"Nouvelle connexion PostgreSQL établie","service":"database","timestamp":"2026-06-29T23:19:59.794Z"}
+{"level":"info","message":"Nouvelle connexion PostgreSQL établie","service":"database","timestamp":"2026-06-29T23:19:59.798Z"}
+{"level":"info","message":"Utilisateur déconnecté","service":"authService","timestamp":"2026-06-29T23:21:43.271Z","userId":"3d3ee2aa-d864-4fe7-9748-e71c7d4a3aa6"}
+{"level":"info","message":"Nouvelle connexion PostgreSQL établie","service":"database","timestamp":"2026-06-29T23:23:35.884Z"}
+{"code":"UNAUTHORIZED","level":"warn","message":"Erreur métier Email ou mot de passe incorrect","method":"POST","service":"errorHandler","timestamp":"2026-06-29T23:23:35.892Z","url":"/api/v1/auth/login"}
+{"level":"info","message":"Utilisateur connecté","role":"ADMIN","service":"authService","timestamp":"2026-06-29T23:24:00.478Z","userId":"ad7ed2f9-25f9-475c-85f9-968af1470dff"}
+{"code":"FORBIDDEN","level":"warn","message":"Erreur métier Accès refusé : droits insuffisants","method":"GET","service":"errorHandler","timestamp":"2026-06-29T23:24:01.299Z","url":"/api/v1/livraisons/mes-missions"}
+{"level":"info","message":"Nouvelle connexion PostgreSQL établie","service":"database","timestamp":"2026-06-29T23:24:01.373Z"}
+{"level":"info","message":"Nouvelle connexion PostgreSQL établie","service":"database","timestamp":"2026-06-29T23:24:01.381Z"}
+{"adminId":"ad7ed2f9-25f9-475c-85f9-968af1470dff","level":"info","message":"Statut utilisateur modifié","newStatut":"INACTIF","oldStatut":"ACTIF","service":"usersService","targetId":"7356b282-ef22-4d6b-b40c-723c21aa0c96","timestamp":"2026-06-29T23:24:14.594Z"}
+{"adminId":"ad7ed2f9-25f9-475c-85f9-968af1470dff","level":"info","message":"Statut utilisateur modifié","newStatut":"ACTIF","oldStatut":"INACTIF","service":"usersService","targetId":"7356b282-ef22-4d6b-b40c-723c21aa0c96","timestamp":"2026-06-29T23:24:20.156Z"}
+{"adminId":"ad7ed2f9-25f9-475c-85f9-968af1470dff","level":"info","message":"Statut utilisateur modifié","newStatut":"INACTIF","oldStatut":"ACTIF","service":"usersService","targetId":"4fdcb1b9-0aa3-45f9-9119-bf8895b4a0c2","timestamp":"2026-06-29T23:24:26.239Z"}
+{"adminId":"ad7ed2f9-25f9-475c-85f9-968af1470dff","level":"info","message":"Statut utilisateur modifié","newStatut":"ACTIF","oldStatut":"INACTIF","service":"usersService","targetId":"4fdcb1b9-0aa3-45f9-9119-bf8895b4a0c2","timestamp":"2026-06-29T23:24:29.155Z"}
+{"level":"info","message":"Nouvelle connexion PostgreSQL établie","service":"database","timestamp":"2026-06-29T23:25:24.619Z"}
+{"error":"une valeur NULL viole la contrainte NOT NULL de la colonne « action » dans la relation « historique_audits »","level":"error","message":"Erreur query PostgreSQL","service":"database","text":"INSERT INTO historique_audits\n         (utilisateur_id, action, table_cible, ent","timestamp":"2026-06-29T23:25:24.971Z"}
+{"error":"une valeur NULL viole la contrainte NOT NULL de la colonne « action » dans la relation « historique_audits »","level":"error","message":"Échec enregistrement audit","service":"audit","timestamp":"2026-06-29T23:25:24.977Z","utilisateurId":"ad7ed2f9-25f9-475c-85f9-968af1470dff"}
+{"adminId":"ad7ed2f9-25f9-475c-85f9-968af1470dff","level":"info","message":"Utilisateur créé par un admin","role":"ADMIN","service":"usersService","timestamp":"2026-06-29T23:25:24.977Z","userId":"cf88bf0f-3d51-4128-938c-1cf92fa909b4"}
+{"level":"info","message":"Nouvelle connexion PostgreSQL établie","service":"database","timestamp":"2026-06-29T23:25:25.197Z"}
+{"level":"info","message":"Utilisateur déconnecté","service":"authService","timestamp":"2026-06-29T23:25:45.102Z","userId":"ad7ed2f9-25f9-475c-85f9-968af1470dff"}
+{"level":"info","message":"Nouvelle connexion PostgreSQL établie","service":"database","timestamp":"2026-06-29T23:26:23.772Z"}
+{"email":"nina@gmail.com","level":"info","message":"Nouvel utilisateur inscrit","role":"CLIENT","service":"authService","timestamp":"2026-06-29T23:26:24.110Z","userId":"264b69df-795f-4d19-bb82-7ccbea011dfc"}
+{"level":"info","message":"Déconnexion socket","reason":"transport close","service":"socket","socketId":"DxAhfZzDi54mYOiZAAAB","timestamp":"2026-06-29T23:26:41.382Z","userId":"70f14123-7cb5-4fc3-a063-27a39d783148"}

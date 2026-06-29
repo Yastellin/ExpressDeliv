@@ -1,0 +1,5 @@
+{"error":"Cannot read properties of undefined (reading 'cert')","level":"error","message":"Erreur initialisation Firebase","service":"firebase","timestamp":"2026-06-29T21:07:05.082Z"}
+{"error":"Cannot read properties of undefined (reading 'cert')","level":"error","message":"Erreur initialisation Firebase","service":"firebase","timestamp":"2026-06-29T21:12:04.263Z"}
+{"error":"Cannot read properties of undefined (reading 'cert')","level":"error","message":"Erreur initialisation Firebase","service":"firebase","timestamp":"2026-06-29T21:12:27.961Z"}
+{"error":"une valeur NULL viole la contrainte NOT NULL de la colonne « action » dans la relation « historique_audits »","level":"error","message":"Erreur query PostgreSQL","service":"database","text":"INSERT INTO historique_audits\n         (utilisateur_id, action, table_cible, ent","timestamp":"2026-06-29T23:25:24.971Z"}
+{"error":"une valeur NULL viole la contrainte NOT NULL de la colonne « action » dans la relation « historique_audits »","level":"error","message":"Échec enregistrement audit","service":"audit","timestamp":"2026-06-29T23:25:24.977Z","utilisateurId":"ad7ed2f9-25f9-475c-85f9-968af1470dff"}

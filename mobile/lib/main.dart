@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'core/router/app_router.dart';
 import 'core/services/storage_service.dart';
 import 'features/auth/presentation/bloc/auth_cubit.dart';
 import 'features/auth/domain/repositories/auth_repository.dart';
-import 'features/auth/domain/repositories/auth_repository_impl.dart'; // ✅ Chemin corrigé
+import 'features/auth/domain/repositories/auth_repository_impl.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'core/services/notification_service.dart';
 
@@ -18,8 +18,12 @@ void main() async {
 
   // Initialiser Firebase seulement si ce n'est pas le web
   if (!kIsWeb) {
-    await Firebase.initializeApp();
-    await NotificationService.init();
+    try {
+      await Firebase.initializeApp();
+      await NotificationService.init();
+    } catch (err) {
+      print('❌ Firebase initialisation échouée : $err');
+    }
   } else {
     print('🔵 Mode web : Firebase désactivé');
   }

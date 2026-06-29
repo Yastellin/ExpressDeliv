@@ -6,11 +6,6 @@
     "auditLog": "D:\\Bosses\\DAII L3\\Projets\\Projet_flutter\\expressdeliv\\backend\\logs\\.f095675397c361fd199380d3293b3b94490c091c-audit.json",
     "files": [
         {
-            "date": 1781523652230,
-            "name": "D:\\Bosses\\DAII L3\\Projets\\Projet_flutter\\expressdeliv\\backend\\logs\\exceptions-2026-06-15.log",
-            "hash": "9a78fa2c019a418aee3039d6016f6586ac8b3d8080925b33c1520dcd6638f468"
-        },
-        {
             "date": 1782373246789,
             "name": "D:\\Bosses\\DAII L3\\Projets\\Projet_flutter\\expressdeliv\\backend\\logs\\exceptions-2026-06-25.log",
             "hash": "f9c9e868be2b0363ae89e8f6b25c3ce1571ca20eb189fcfa7c543708631bf892"
@@ -34,6 +29,11 @@
             "date": 1782713717270,
             "name": "D:\\Bosses\\DAII L3\\Projets\\Projet_flutter\\expressdeliv\\backend\\logs\\exceptions-2026-06-29.log",
             "hash": "ab9a9fb104e6533b207bbe971d6f4565602c352af83cbfc98a2b7ef3ac4cd5ae"
+        },
+        {
+            "date": 1782767223153,
+            "name": "D:\\Bosses\\DAII L3\\Projets\\Projet_flutter\\expressdeliv\\backend\\logs\\exceptions-2026-06-30.log",
+            "hash": "d67824ba380ac3e68b8b0460ef955e732cd056af0dcdbd0724fa34c554dc4cd8"
         }
     ],
     "hashType": "sha256"

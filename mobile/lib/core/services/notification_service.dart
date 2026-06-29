@@ -1,3 +1,4 @@
+/*
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 class NotificationService {
@@ -40,11 +41,16 @@ class NotificationService {
     print('Notification en arrière‑plan : ${message.notification?.title}');
   }
 }
+*/
 
-
-/* import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'dart:convert';
+
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  print('Notification reçue en arrière-plan : ${message.notification?.title}');
+}
 
 class NotificationService {
   static final FirebaseMessaging _fcm = FirebaseMessaging.instance;
@@ -52,51 +58,55 @@ class NotificationService {
       FlutterLocalNotificationsPlugin();
 
   static Future<void> init() async {
-    // 1. Demander les permissions
-    NotificationSettings settings = await _fcm.requestPermission(
-      alert: true,
-      badge: true,
-      sound: true,
-    );
+    try {
+      // 1. Demander les permissions
+      NotificationSettings settings = await _fcm.requestPermission(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
 
-    if (settings.authorizationStatus != AuthorizationStatus.authorized) {
-      print('Permission FCM refusée');
-      return;
+      if (settings.authorizationStatus != AuthorizationStatus.authorized) {
+        print('Permission FCM refusée');
+        return;
+      }
+
+      print('Permission FCM accordée');
+
+      // 2. Initialiser les notifications locales (avec les bons constructeurs)
+      const AndroidInitializationSettings androidSettings =
+          AndroidInitializationSettings('@mipmap/ic_launcher');
+      const DarwinInitializationSettings iosSettings =
+          DarwinInitializationSettings();
+      const InitializationSettings initSettings = InitializationSettings(
+        android: androidSettings,
+        iOS: iosSettings,
+      );
+      await _localNotifications.initialize(initSettings);
+
+      // 3. Récupérer le token
+      final token = await getToken();
+      print('Token FCM : $token');
+
+      // 4. Écouter les messages en premier plan
+      FirebaseMessaging.onMessage.listen(_handleForegroundMessage);
+
+      // 5. Écouter les messages en arrière-plan (top-level handler requis)
+      FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+      // 6. Gérer l'ouverture via notification
+      RemoteMessage? initialMessage = await _fcm.getInitialMessage();
+      if (initialMessage != null) {
+        _handleNavigation(initialMessage.data);
+      }
+
+      // 7. Gérer les clics sur notification
+      FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+        _handleNavigationFromData(message.data);
+      });
+    } catch (err) {
+      print('❌ NotificationService.init erreur : $err');
     }
-
-    print('Permission FCM accordée');
-
-    // 2. Initialiser les notifications locales (avec les bons constructeurs)
-    const AndroidInitializationSettings androidSettings =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
-    const DarwinInitializationSettings iosSettings =
-        DarwinInitializationSettings();
-    const InitializationSettings initSettings = InitializationSettings(
-      android: androidSettings,
-      iOS: iosSettings,
-    );
-    await _localNotifications.initialize(initSettings);
-
-    // 3. Récupérer le token
-    final token = await getToken();
-    print('Token FCM : $token');
-
-    // 4. Écouter les messages en premier plan
-    FirebaseMessaging.onMessage.listen(_handleForegroundMessage);
-
-    // 5. Écouter les messages en arrière-plan (fonction statique)
-    FirebaseMessaging.onBackgroundMessage(_handleBackgroundMessage);
-
-    // 6. Gérer l'ouverture via notification
-    RemoteMessage? initialMessage = await _fcm.getInitialMessage();
-    if (initialMessage != null) {
-      _handleNavigation(initialMessage.data);
-    }
-
-   // 7. Gérer les clics sur notification
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      _handleNavigationFromData(message.data);
-    });
   }
 
   static Future<String?> getToken() async {
@@ -109,14 +119,6 @@ class NotificationService {
     _handleNavigation(message.data);
   }
 
-  @pragma('vm:entry-point')
-  static Future<void> _handleBackgroundMessage(RemoteMessage message) async {
-    print('Notification reçue en arrière‑plan : ${message.notification?.title}');
-    // On peut afficher une notification locale ici aussi
-    // Mais pour le background, on utilise flutter_local_notifications
-    // avec un plugin qui gère le background, mais c'est plus complexe.
-    // Pour l'instant, on laisse la notification système s'afficher.
-  }
 
   static void _handleNavigationFromData(Map<String, dynamic> data) {
     print('Notification cliquée : $data');
@@ -158,5 +160,3 @@ class NotificationService {
     // On la déplace vers le repository pour rester cohérent.
   }
 }
-
-*/

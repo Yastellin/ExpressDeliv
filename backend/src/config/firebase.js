@@ -3,6 +3,22 @@ import { createLogger } from './winston.js';
 
 const logger = createLogger('firebase');
 
+const normalizeFirebaseEnvValue = (value) => {
+  if (!value) return value;
+  let result = value.trim();
+  if ((result.startsWith('"') && result.endsWith('"')) || (result.startsWith("'") && result.endsWith("'"))) {
+    result = result.slice(1, -1);
+  }
+  return result;
+};
+
+const extractJsonField = (value, key) => {
+  if (!value || !value.includes(`\"${key}\"`)) return value;
+  const regex = new RegExp(`\"${key}\"\\s*:\\s*\"([^\"]+)\"`, 's');
+  const match = value.match(regex);
+  return match ? match[1] : value;
+};
+
 // ── Initialisation unique (guard contre double init) ──────
 let firebaseApp;
 
@@ -15,35 +31,43 @@ const initFirebase = () => {
     return null;
   }
 
-  // Vérification des variables d'environnement obligatoires
-  const required = [
-    'FIREBASE_PROJECT_ID',
-    'FIREBASE_CLIENT_EMAIL',
-    'FIREBASE_PRIVATE_KEY',
-  ];
-  const missing = required.filter((key) => !process.env[key]);
+  const rawProjectId = normalizeFirebaseEnvValue(process.env.FIREBASE_PROJECT_ID);
+  const rawClientEmail = normalizeFirebaseEnvValue(process.env.FIREBASE_CLIENT_EMAIL);
+  const rawPrivateKey = normalizeFirebaseEnvValue(process.env.FIREBASE_PRIVATE_KEY);
+
+  const projectId = extractJsonField(rawProjectId, 'project_id');
+  const clientEmail = extractJsonField(rawClientEmail, 'client_email');
+  let privateKey = extractJsonField(rawPrivateKey, 'private_key');
+
+  const missing = [];
+  if (!projectId) missing.push('FIREBASE_PROJECT_ID');
+  if (!clientEmail) missing.push('FIREBASE_CLIENT_EMAIL');
+  if (!privateKey) missing.push('FIREBASE_PRIVATE_KEY');
 
   if (missing.length > 0) {
     logger.warn(
-      `Firebase non configuré — variables manquantes : ${missing.join(', ')}. ` +
+      `Firebase non configuré — variables manquantes ou invalides : ${missing.join(', ')}. ` +
       'Les notifications push seront désactivées.'
     );
     return null;
   }
 
   try {
+    // Remplacer les \n par des vrais sauts de ligne
+    privateKey = privateKey.replace(/\\n/g, '\n');
+
     firebaseApp = admin.initializeApp({
       credential: admin.credential.cert({
-        projectId:   process.env.FIREBASE_PROJECT_ID,
-        clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-        // Le \n est encodé en chaîne dans le .env Windows
-        privateKey:  process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+        projectId,
+        clientEmail,
+        privateKey,
       }),
     });
     logger.info(`Firebase initialisé — projet : ${process.env.FIREBASE_PROJECT_ID}`);
     return firebaseApp;
   } catch (err) {
     logger.error('Erreur initialisation Firebase', { error: err.message });
+    // On laisse l'application démarrer quand même (notifications désactivées)
     return null;
   }
 };
