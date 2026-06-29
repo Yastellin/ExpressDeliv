@@ -54,26 +54,30 @@ export const createUser = async (req, res, next) => {
 
 export const listUsers = async (req, res, next) => {
   try {
-    const { page, limit, role, statut, search } = req.validatedQuery;
+    const query = req.validatedQuery || req.query;
+    const { page, limit, role, statut, search, email } = query;
     const result = await UsersService.listUsers({
-      page:   parseInt(page)  || 1,
-      limit:  parseInt(limit) || 20,
+      page: parseInt(page) || 1,
+      limit: parseInt(limit) || 20,
       role,
       statut,
       search,
-    });
+      email,
+    }, req.user); // Ajout de req.user
 
     res.status(200).json({
       success: true,
-      data:    result.users.map(toUserDTO),
+      data: result.users.map(toUserDTO),
       pagination: {
-        page:       result.page,
-        limit:      result.limit,
-        total:      result.total,
+        page: result.page,
+        limit: result.limit,
+        total: result.total,
         totalPages: result.totalPages,
       },
     });
-  } catch (err) { next(err); }
+  } catch (err) {
+    next(err);
+  }
 };
 
 // ══════════════════════════════════════════════════════════

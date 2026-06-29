@@ -4,8 +4,16 @@ import { query, getClient } from '../../config/database.js';
 // createCommande() — Crée commande + colis (transaction ACID)
 // ══════════════════════════════════════════════════════════
 export const createCommande = async (clientId, commandeData) => {
-  const { adresse_livraison, adresse_livraison_lat,
-          adresse_livraison_lng, notes, colis } = commandeData;
+  const {
+    adresse_livraison,
+    adresse_livraison_lat,
+    adresse_livraison_lng,
+    notes,
+    colis,
+    expediteur_nom,      // ✅ Ajout
+    expediteur_prenom,   // ✅ Ajout
+    expediteur_telephone // ✅ Ajout
+  } = commandeData;
 
   // Calcul du montant total depuis les colis
   const montantTotal = colis.reduce(
@@ -16,15 +24,17 @@ export const createCommande = async (clientId, commandeData) => {
   try {
     await client.query('BEGIN');
 
-    // 1. Insérer la commande
+    // 1. Insérer la commande avec les champs expéditeur
     const cmdResult = await client.query(
       `INSERT INTO commandes
          (client_id, adresse_livraison, adresse_livraison_lat,
-          adresse_livraison_lng, montant_total, notes)
-       VALUES ($1, $2, $3, $4, $5, $6)
+          adresse_livraison_lng, montant_total, notes,
+          expediteur_nom, expediteur_prenom, expediteur_telephone)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
        RETURNING *`,
       [clientId, adresse_livraison, adresse_livraison_lat ?? null,
-       adresse_livraison_lng ?? null, montantTotal, notes ?? null]
+       adresse_livraison_lng ?? null, montantTotal, notes ?? null,
+       expediteur_nom ?? null, expediteur_prenom ?? null, expediteur_telephone ?? null]
     );
     const commande = cmdResult.rows[0];
 

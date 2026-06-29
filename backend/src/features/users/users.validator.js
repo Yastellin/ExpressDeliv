@@ -100,6 +100,7 @@ export const updateRoleSchema = Joi.object({
 export const listUsersSchema = Joi.object({
   page:   Joi.number().integer().min(1).default(1),
   limit:  Joi.number().integer().min(1).max(100).default(20),
+  email: Joi.string().email().optional(), 
   role:   Joi.string().valid('CLIENT', 'LIVREUR', 'ADMIN', 'SUPER_ADMIN').optional(),
   statut: Joi.string().valid('ACTIF', 'INACTIF', 'SUSPENDU').optional(),
   search: Joi.string().max(100).optional(),

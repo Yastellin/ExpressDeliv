@@ -26,10 +26,19 @@ export const createCommandeSchema = Joi.object({
   adresse_livraison: Joi.string().min(5).max(500).required()
     .messages({ 'any.required': "L'adresse de livraison est requise" }),
 
+  expediteur_nom: Joi.string().min(2).max(100).required()
+    .messages({ 'any.required': 'Le nom de l\'expéditeur est requis' }),
+  expediteur_prenom: Joi.string().min(2).max(100).required()
+    .messages({ 'any.required': 'Le prénom de l\'expéditeur est requis' }),
+  expediteur_telephone: Joi.string().min(8).max(20).required()
+    .messages({ 'any.required': 'Le téléphone de l\'expéditeur est requis' }),
+
   adresse_livraison_lat: Joi.number().min(-90).max(90).optional(),
   adresse_livraison_lng: Joi.number().min(-180).max(180).optional(),
-
   notes: Joi.string().max(500).allow('', null).optional(),
+
+  // ✅ NOUVEAU : champ optionnel pour l'admin
+  client_id: Joi.string().uuid().optional(),
 
   colis: Joi.array()
     .items(colisSchema)

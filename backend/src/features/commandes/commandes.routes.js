@@ -35,7 +35,7 @@ const validateQuery = (schema) => (req, res, next) => {
 router.post(
   '/',
   authenticate,
-  isClient,
+  isAuthenticated,
   validate(createCommandeSchema),
   createCommande
 );

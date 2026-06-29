@@ -6,16 +6,23 @@ const logger = createLogger('chat');
 // ── Vérification accès livraison ──────────────────────────
 // Seuls le client propriétaire et le livreur affecté peuvent chatter
 const verifyAccess = async (livraisonId, userId) => {
-  const result = await query(
-    `SELECT l.id
-     FROM livraisons l
-     JOIN commandes c ON c.id = l.commande_id
-     WHERE l.id = $1
-       AND l.statut = 'EN_COURS'
-       AND (l.livreur_id = $2 OR c.client_id = $2)`,
-    [livraisonId, userId]
-  );
-  return result.rowCount > 0;
+  console.log('🔍 [verifyAccess] livraisonId:', livraisonId, 'userId:', userId);
+  try {
+    const result = await query(
+      `SELECT l.id
+       FROM livraisons l
+       JOIN commandes c ON c.id = l.commande_id
+       WHERE l.id = $1
+         AND l.statut = 'EN_COURS'
+         AND (l.livreur_id = $2 OR c.client_id = $2)`,
+      [livraisonId, userId]
+    );
+    console.log('🔍 [verifyAccess] rowCount:', result.rowCount);
+    return result.rowCount > 0;
+  } catch (err) {
+    console.error('[verifyAccess] Erreur SQL:', err);
+    throw err;
+  }
 };
 
 // ── Persistance du message ────────────────────────────────
@@ -69,39 +76,44 @@ export const registerChatHandlers = (io, socket) => {
   // ── chat:join — rejoindre le chat d'une livraison ─────
   // Payload : { livraison_id: string }
   // Retourne l'historique des 100 derniers messages
-  socket.on('chat:join', async ({ livraison_id }) => {
-    try {
-      if (!livraison_id) return;
+socket.on('chat:join', async ({ livraison_id }) => {
+  try {
+    if (!livraison_id) return;
 
-      // Vérification accès
-      const hasAccess = await verifyAccess(livraison_id, socket.data.userId);
-      if (!hasAccess) {
-        return socket.emit('chat:error', {
-          message: 'Accès refusé à ce chat',
-        });
-      }
+    console.log('📩 [chat:join] livraison_id:', livraison_id, 'userId:', socket.data.userId);
 
-      // Rejoindre la room chat (partagée avec la room GPS)
-      const room = `livraison_${livraison_id}`;
-      socket.join(room);
+    // Vérification accès
+    const hasAccess = await verifyAccess(livraison_id, socket.data.userId);
+    console.log('🔍 [chat:join] hasAccess:', hasAccess);
 
-      // Charger et envoyer l'historique uniquement à ce socket
-      const history = await loadHistory(livraison_id);
-      socket.emit('chat:history', { livraison_id, messages: history });
-
-      // Marquer les messages reçus comme lus
-      await markAsRead(livraison_id, socket.data.userId);
-
-      logger.debug('Chat rejoint', {
-        userId: socket.data.userId,
-        livraison_id,
+    if (!hasAccess) {
+      return socket.emit('chat:error', {
+        message: 'Accès refusé à ce chat',
       });
-
-    } catch (err) {
-      logger.error('Erreur chat:join', { error: err.message });
-      socket.emit('chat:error', { message: 'Erreur serveur' });
     }
-  });
+
+    // Rejoindre la room chat (partagée avec la room GPS)
+    const room = `livraison_${livraison_id}`;
+    socket.join(room);
+
+    // Charger et envoyer l'historique uniquement à ce socket
+    const history = await loadHistory(livraison_id);
+    socket.emit('chat:history', { livraison_id, messages: history });
+
+    // Marquer les messages reçus comme lus
+    await markAsRead(livraison_id, socket.data.userId);
+
+    logger.debug('Chat rejoint', {
+      userId: socket.data.userId,
+      livraison_id,
+    });
+
+  } catch (err) {
+    console.error('[chat:join] Erreur:', err);
+    logger.error('Erreur chat:join', { error: err.message });
+    socket.emit('chat:error', { message: 'Erreur serveur' });
+  }
+});
 
   // ── chat:message — envoyer un message ─────────────────
   socket.on('chat:message', async ({ livraison_id, contenu }) => {

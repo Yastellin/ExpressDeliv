@@ -32,22 +32,20 @@ class CommandeRepositoryImpl implements CommandeRepository {
   }
 
 @override
-Future<Commande> createCommande(String adresse, List<Map<String, dynamic>> colis) async {
+Future<Commande> createCommande(String adresse, List<Map<String, dynamic>> colis, {String? clientId}) async {
   try {
-    final response = await _dio.post('/commandes', data: {
+    final data = <String, dynamic>{
       'adresse_livraison': adresse,
       'colis': colis,
-    });
-    final data = response.data;
-    if (data is Map<String, dynamic> && data.containsKey('data')) {
-      try {
-        return Commande.fromJson(data['data'] as Map<String, dynamic>);
-      } catch (e) {
-        // Ajoute un log pour voir l'erreur exacte
-        print('Erreur de parsing Commande : $e');
-        print('Réponse reçue : ${data['data']}');
-        throw Exception('Erreur de parsing des données : ${e.toString()}');
-      }
+    };
+    if (clientId != null && clientId.isNotEmpty) {
+      data['client_id'] = clientId;
+    }
+
+    final response = await _dio.post('/commandes', data: data);
+    final responseData = response.data;
+    if (responseData is Map<String, dynamic> && responseData.containsKey('data')) {
+      return Commande.fromJson(responseData['data'] as Map<String, dynamic>);
     } else {
       throw Exception('Format de réponse inattendu');
     }

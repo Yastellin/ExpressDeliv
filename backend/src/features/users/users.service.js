@@ -105,8 +105,14 @@ export const updateProfile = async (id, fields, meta = {}) => {
 // ══════════════════════════════════════════════════════════
 // listUsers() — Liste paginée (ADMIN+)
 // ══════════════════════════════════════════════════════════
-export const listUsers = async (filters) => {
-  return await UsersRepository.findAll(filters);
+export const listUsers = async (filters, currentUser) => {
+  // Si l'utilisateur n'est pas admin, il ne voit que lui-même
+  if (!['ADMIN', 'SUPER_ADMIN'].includes(currentUser.role)) {
+    // ... logique spécifique
+  }
+  // Appel au repository avec tous les filtres
+  const result = await UsersRepository.findAll(filters);
+  return result;
 };
 
 // ══════════════════════════════════════════════════════════

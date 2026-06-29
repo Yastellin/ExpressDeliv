@@ -5,6 +5,23 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../bloc/chat_cubit.dart';
 
+String _formatTimestamp(String? dateString) {
+  if (dateString == null) return '';
+  try {
+    // Forcer l’interprétation en UTC (ajouter 'Z' si absent)
+    String utcString = dateString;
+    if (!utcString.endsWith('Z') && !utcString.contains('+') && !utcString.contains('-')) {
+      utcString += 'Z';
+    }
+    final date = DateTime.parse(utcString);
+    // Madagascar est UTC+3
+    final madagascarTime = date.add(const Duration(hours: 3));
+    return '${madagascarTime.hour.toString().padLeft(2, '0')}:${madagascarTime.minute.toString().padLeft(2, '0')}';
+  } catch (e) {
+    return '';
+  }
+}
+
 class ChatPage extends StatefulWidget {
   final String livraisonId;
   final String currentUserId;
@@ -131,7 +148,7 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Widget _buildMessageBubble(Map<String, dynamic> message, bool isMe) {
-    final timestamp = DateTime.tryParse(message['envoye_at'] ?? '') ?? DateTime.now();
+    print('[ChatPage] expediteur_id: ${message['expediteur_id']}, currentUserId: $widget.currentUserId, isMe: $isMe');
     final expediteurNom = message['expediteur_nom'] ?? '';
     final expediteurPrenom = message['expediteur_prenom'] ?? '';
     final nomComplet = '$expediteurPrenom $expediteurNom'.trim();
@@ -185,7 +202,7 @@ class _ChatPageState extends State<ChatPage> {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    '${timestamp.hour}:${timestamp.minute.toString().padLeft(2, '0')}',
+                    _formatTimestamp(message['envoye_at']),
                     style: TextStyle(
                       fontSize: 10,
                       color: isMe ? Colors.white70 : AppColors.textSecondary,

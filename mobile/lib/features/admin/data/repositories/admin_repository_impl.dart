@@ -51,7 +51,7 @@ class AdminRepositoryImpl implements AdminRepository {
           '❌ [AdminRepo] Erreur Dio : ${e.response?.statusCode} - ${e.response?.data}');
       // Fallback explicite
       print('📦 [AdminRepo] Utilisation des données factices');
-      return _getMockUsers();
+      rethrow;
     } catch (e) {
       print('❌ [AdminRepo] Erreur inattendue : $e');
       return _getMockUsers();

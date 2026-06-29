@@ -7,6 +7,7 @@ import '../../../../core/widgets/custom_snackbar.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../bloc/admin_cubit.dart';
 import '../../../commandes/data/models/commande.dart';
+import 'admin_create_order_page.dart';
 class GestionCommandesPage extends StatefulWidget {
   const GestionCommandesPage({super.key});
 
@@ -71,7 +72,7 @@ class _GestionCommandesPageState extends State<GestionCommandesPage> {
                         if (commandes.isEmpty) {
                           return _buildEmptyState();
                         }
-                        // ✅ Passer l'état courant à la liste
+                        // Passer l'état courant à la liste
                         return _buildOrderList(commandes, state);
                       } else if (state is AdminError) {
                         return _buildError(state.message);
@@ -84,26 +85,39 @@ class _GestionCommandesPageState extends State<GestionCommandesPage> {
             ),
           ),
         ),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: AppColors.primary,
+          onPressed: () async {
+            final result = await Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const AdminCreateOrderPage()),
+            );
+            if (result == true) {
+              _cubit.chargerCommandes(); // Recharger la liste après création
+            }
+          },
+          child: const Icon(LucideIcons.plus),
+        ),
       ),
     );
   }
 
-  // ✅ Recevoir l'état courant en paramètre
+  // Recevoir l'état courant en paramètre
   Widget _buildOrderList(List<Commande> commandes, AdminState currentState) {
     return ListView.separated(
       itemCount: commandes.length,
       separatorBuilder: (_, __) => const SizedBox(height: AppSpacing.xs),
       itemBuilder: (context, index) {
         final commande = commandes[index];
-        // ✅ Passer l'état à la carte
+        // Passer l'état à la carte
         return _buildOrderCard(commande, currentState);
       },
     );
   }
 
-  // ✅ Recevoir l'état courant en paramètre
+  // Recevoir l'état courant en paramètre
   Widget _buildOrderCard(Commande commande, AdminState currentState) {
-    // ✅ Utiliser l'état passé au lieu de context.watch
+    // Utiliser l'état passé au lieu de context.watch
     final isAssigning = currentState is AdminAssignmentLoading &&
         currentState.commandeId == commande.id;
 
@@ -192,7 +206,7 @@ class _GestionCommandesPageState extends State<GestionCommandesPage> {
       context: context,
       barrierDismissible: false,
       builder: (dialogContext) {
-        // ✅ Fournir le cubit existant au dialogue
+        // Fournir le cubit existant au dialogue
         return BlocProvider.value(
           value: _cubit,
           child: AlertDialog(
@@ -211,7 +225,7 @@ class _GestionCommandesPageState extends State<GestionCommandesPage> {
                   }
                 },
                 builder: (context, state) {
-                  // ✅ Ce contexte a accès au cubit via le BlocProvider.value
+                  // Ce contexte a accès au cubit via le BlocProvider.value
                   if (state is AdminDriversLoading) {
                     return const Center(
                       child: CircularProgressIndicator(color: AppColors.primary),

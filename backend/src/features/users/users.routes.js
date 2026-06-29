@@ -36,8 +36,12 @@ const validateQuery = (schema) => (req, res, next) => {
     stripUnknown: true,
     allowUnknown: false,
   });
-  if (error) return next(error);
+  if (error) {
+    console.log('❌ [validateQuery] Erreur de validation :', error.details);
+  return next(error);
+  }
   req.validatedQuery = value;
+  console.log('✅ [validateQuery] req.validatedQuery =', value);
   next();
 };
 

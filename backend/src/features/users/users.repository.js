@@ -9,9 +9,14 @@ const PUBLIC_FIELDS = `
 `;
 
 // ── Trouver un utilisateur par ID ─────────────────────────
+// Recherche un utilisateur par ID
 export const findById = async (id) => {
   const result = await query(
-    `SELECT ${PUBLIC_FIELDS}
+    `SELECT
+       u.id, u.nom, u.prenom, u.email, u.telephone,
+       u.adresse_defaut, u.zone_geographique,
+       u.statut, u.created_at,
+       r.nom AS role_nom
      FROM utilisateurs u
      JOIN roles r ON r.id = u.role_id
      WHERE u.id = $1`,
@@ -22,12 +27,11 @@ export const findById = async (id) => {
 
 // ── Liste paginée avec filtres ────────────────────────────
 // Supporte : ?page=1&limit=20&role=CLIENT&statut=ACTIF&search=rakoto
-export const findAll = async ({ page = 1, limit = 20, role, statut, search }) => {
+  export const findAll = async ({ page = 1, limit = 20, role, statut, search, email }) => {
   const offset = (page - 1) * limit;
   const params = [];
   const conditions = [];
 
-  // Construction dynamique des filtres
   if (role) {
     params.push(role);
     conditions.push(`r.nom = $${params.length}`);
@@ -35,6 +39,11 @@ export const findAll = async ({ page = 1, limit = 20, role, statut, search }) =>
   if (statut) {
     params.push(statut);
     conditions.push(`u.statut = $${params.length}`);
+  }
+  // NOUVEAU : filtre email exact (ou partiel)
+  if (email) {
+    params.push(`%${email.toLowerCase()}%`);
+    conditions.push(`LOWER(u.email) LIKE $${params.length}`);
   }
   if (search) {
     params.push(`%${search.toLowerCase()}%`);
@@ -50,7 +59,6 @@ export const findAll = async ({ page = 1, limit = 20, role, statut, search }) =>
     ? `WHERE ${conditions.join(' AND ')}`
     : '';
 
-  // Requête principale
   params.push(limit, offset);
   const dataResult = await query(
     `SELECT ${PUBLIC_FIELDS}
@@ -62,7 +70,6 @@ export const findAll = async ({ page = 1, limit = 20, role, statut, search }) =>
     params
   );
 
-  // Compte total (pour la pagination)
   const countParams = params.slice(0, -2);
   const countResult = await query(
     `SELECT COUNT(*) AS total
